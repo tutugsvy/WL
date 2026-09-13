@@ -292,26 +292,23 @@ const MARKETS = [
   }
   buildTape();
 
-  function liveTickers() {
-    const rows = $$("#liveTickers tr");
-    const state = rows.map((r) => ({ el: r.querySelector(".tk__pct"), v: parseFloat(r.dataset.base) }));
-    const paint = (s) => {
-      s.el.textContent = fmtPct(s.v);
-      s.el.classList.toggle("up", s.v >= 0);
-      s.el.classList.toggle("down", s.v < 0);
-    };
-    state.forEach(paint);
-    setInterval(() => {
-      const s = pick(state);
-      const d = rand(-0.18, 0.2);
-      s.v += d;
-      paint(s);
-      s.el.classList.remove("flash-up", "flash-down");
-      void s.el.offsetWidth;
-      s.el.classList.add(d >= 0 ? "flash-up" : "flash-down");
-    }, 900);
-  }
-  liveTickers();
+function liveTickers() {
+  const rows = $$("#liveTickers tr");
+  const state = rows.map((r) => ({
+    el: r.querySelector(".tk__pct"),
+    v: parseFloat(r.dataset.base)
+  }));
+
+  const paint = (s) => {
+    s.el.textContent = fmtPct(s.v);
+    s.el.classList.toggle("up", s.v >= 0);
+    s.el.classList.toggle("down", s.v < 0);
+  };
+
+  state.forEach(paint);
+}
+
+liveTickers();
 
   function makeSeries(n, start) {
     const out = [];
@@ -509,18 +506,6 @@ const MARKETS = [
       $("#latency").textContent = Math.round(rand(8, 46)) + "ms";
       $("#mPing").textContent = Math.round(rand(9, 38)) + "ms";
     }, 1800);
-
-    let v = 124921.42, c = 8.42;
-    setInterval(() => {
-      if (S.wallet) return;
-      const d = rand(-180, 220);
-      v += d; c += d / 1500;
-      $("#pfValue").textContent = fmtUsd(v);
-      $("#deskPf").textContent = fmtUsd(v);
-      const el = $("#pfChange");
-      el.textContent = fmtPct(c);
-      el.className = "pf__value " + (c >= 0 ? "c-green" : "c-red");
-    }, 1400);
 
     const meters = [["mCpu", "mCpuV", 25, 90], ["mMem", "mMemV", 50, 82], ["mNet", "mNetV", 60, 99]];
     setInterval(() => {
@@ -930,7 +915,7 @@ const MARKETS = [
     focus($('[data-win="market"]'));
 
     const tb = $("#deskTickers tbody");
-    const rowsData = MARKETS.filter((m) => ["WSEX", "NVDA", "TSLA", "GME", "BTC", "ETH", "SOL"].includes(m.sym));
+    const rowsData = MARKETS.filter((m) => ["WSEX", "NVDA", "AAPL", "TSLA", "AMZN", "SPY"].includes(m.sym));
     tb.innerHTML = rowsData.map((m) => `<tr data-sym="${m.sym}"><td>${m.sym}</td><td>${fmtPrice(m.price)}</td><td class="tk__pct ${m.chg >= 0 ? "up" : "down"}">${fmtPct(m.chg)}</td></tr>`).join("");
     const paintRow = (tr, m, d) => {
       tr.children[1].textContent = fmtPrice(m.price);
