@@ -56,10 +56,12 @@ DETECTING VOLATILITY........ EXTREME
       <a href="#desktop">DESKTOP</a>
       <a href="#chaos">CHAOS</a>
       <a href="#about">ABOUT</a>
+      <a href="#product">PRODUCT</a>
       <a href="#token">$WSEX</a>
     </nav>
     <div class="taskbar__right">
       <span class="taskbar__status"><i class="dot dot--green"></i> MARKET: ACTIVE</span>
+      <button class="wallet-btn" id="walletBtn" type="button" title="Connect wallet"><i class="dot"></i><span id="walletBtnText">CONNECT WALLET</span></button>
       <span class="taskbar__clock" id="clock">00:00:00</span>
     </div>
   </header>
@@ -146,7 +148,7 @@ DETECTING VOLATILITY........ EXTREME
 
         <div class="panel panel--chart">
           <div class="panel__head">
-            <span>MARKET CHART — $WSEX / USD</span>
+            <span>MARKET CHART — $WSEX / USD <span class="badge" id="chartSrc" title="Data source">SIMULATED</span></span>
             <span class="panel__meta"><b id="chartPrice" class="c-green">0.0000</b> <span id="chartChg" class="c-green">+0.00%</span></span>
           </div>
           <div class="panel__body panel__body--chart">
@@ -166,8 +168,8 @@ DETECTING VOLATILITY........ EXTREME
           </div>
         </div>
 
-        <div class="panel panel--portfolio">
-          <div class="panel__head">PORTFOLIO</div>
+        <div class="panel panel--portfolio" id="pfPanel">
+          <div class="panel__head"><span>PORTFOLIO</span><span class="badge" id="pfMode">SIMULATED</span></div>
           <div class="panel__body">
             <div class="pf">
               <span class="pf__label">TOTAL VALUE</span>
@@ -177,8 +179,14 @@ DETECTING VOLATILITY........ EXTREME
               <span class="pf__label">24H CHANGE</span>
               <span class="pf__value c-green" id="pfChange">+8.42%</span>
             </div>
-            <div class="pf__bars" aria-hidden="true">
+            <div class="pf__bars" id="pfBars" aria-hidden="true">
               <i style="--h:40%"></i><i style="--h:55%"></i><i style="--h:35%"></i><i style="--h:70%"></i><i style="--h:60%"></i><i style="--h:85%"></i><i style="--h:75%"></i><i style="--h:95%"></i>
+            </div>
+            <div class="pf__holdings" id="pfHoldings" hidden></div>
+            <div class="pf__foot">
+              <button class="btn btn--sm btn--primary pf__connect" id="pfConnect" type="button">[ CONNECT WALLET ]</button>
+              <span class="pf__addr" id="pfAddr" hidden></span>
+              <button class="btn btn--sm btn--ghost" id="pfAddChain" type="button" hidden title="Add Robinhood Chain to wallet">+ NETWORK</button>
             </div>
           </div>
         </div>
@@ -196,7 +204,7 @@ DETECTING VOLATILITY........ EXTREME
   <!-- ============ DESKTOP ============ -->
   <section class="section section--desktop" id="desktop">
     <div class="section__head">
-      <p class="eyebrow">// USER SESSION: GUEST</p>
+      <p class="eyebrow">// USER SESSION: <span id="sessionUser">GUEST</span></p>
       <h2 class="h2">YOU ARE NOW INSIDE <span class="c-green">WALLSTREET.EXE</span></h2>
       <p class="lede">Drag the windows. Type in the terminal. Nothing here is regulated.</p>
     </div>
@@ -247,9 +255,10 @@ Type HELP for a list of commands.
         <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--folder"></i> PORTFOLIO</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
         <div class="win__body">
           <div class="kv"><span>TOTAL VALUE</span><b id="deskPf">$124,921.42</b></div>
-          <div class="kv"><span>24H CHANGE</span><b class="c-green">+8.42%</b></div>
-          <div class="kv"><span>$WSEX HELD</span><b>4,200,000</b></div>
-          <div class="kv"><span>AVG ENTRY</span><b>$0.0123</b></div>
+          <div class="kv"><span>24H CHANGE</span><b class="c-green" id="deskPfChg">+8.42%</b></div>
+          <div class="kv"><span>$WSEX HELD</span><b id="deskPfHeld">4,200,000</b></div>
+          <div class="kv"><span id="deskPfRow4K">AVG ENTRY</span><b id="deskPfRow4V">$0.0123</b></div>
+          <div class="kv"><span>ACCESS LEVEL</span><b class="c-gray" id="deskPfAccess">GUEST</b></div>
           <div class="kv"><span>RISK LEVEL</span><b class="c-red">MAXIMUM</b></div>
           <div class="kv"><span>SLEEP</span><b class="c-gray">NONE</b></div>
         </div>
@@ -406,6 +415,26 @@ Type HELP for a list of commands.
     </div>
   </section>
 
+  <!-- ============ PRODUCT (content comes from config.js → PRODUCT) ============ -->
+  <section class="section section--product" id="product" hidden>
+    <div class="section__head">
+      <p class="eyebrow" id="prodEyebrow">// PRODUCT.SYS</p>
+      <h2 class="h2" id="prodHeadline">THE TERMINAL IS THE PRODUCT.</h2>
+    </div>
+    <div class="product__grid">
+      <div class="product__pitch" id="prodPitch"></div>
+      <div class="win product__win">
+        <div class="win__bar"><span class="win__title"><i class="ico ico--sys"></i> PRODUCT.SYS — MODULES</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+        <ul class="modules" id="prodFeatures"></ul>
+        <div class="app__statusbar">
+          <span>MODULES: <b id="prodCount">0</b></span>
+          <span id="prodLive" class="c-green">● LIVE: 0</span>
+        </div>
+      </div>
+    </div>
+    <div class="utility" id="prodUtility"></div>
+  </section>
+
   <!-- ============ TOKEN ============ -->
   <section class="section section--token" id="token">
     <div class="win token">
@@ -422,7 +451,18 @@ Type HELP for a list of commands.
           <div class="trow">
             <span class="trow__k">CONTRACT</span>
             <code class="trow__v" id="contractAddr">0x0000000000000000000000000000000000000000</code>
-            <button class="btn btn--sm copy" data-copy="0x0000000000000000000000000000000000000000">COPY</button>
+            <button class="btn btn--sm copy" id="contractCopy" data-copy="0x0000000000000000000000000000000000000000">COPY</button>
+          </div>
+          <div class="trow trow--market" id="tokMarket" hidden>
+            <span class="trow__k">MARKET <span class="badge" id="tokSrc">LIVE</span></span>
+            <div class="trow__v trow__market">
+              <span>PRICE <b id="tokPrice">—</b></span>
+              <span>24H <b id="tokChg">—</b></span>
+              <span>VOL 24H <b id="tokVol">—</b></span>
+              <span>FDV <b id="tokFdv">—</b></span>
+              <span>LIQ <b id="tokLiq">—</b></span>
+            </div>
+            <span></span>
           </div>
           <div class="trow">
             <span class="trow__k">TICKER</span>
@@ -436,13 +476,19 @@ Type HELP for a list of commands.
           </div>
           <div class="trow">
             <span class="trow__k">NETWORK</span>
-            <code class="trow__v">TBA</code>
+            <code class="trow__v" id="tokNetwork">ROBINHOOD CHAIN (ID 4663)</code>
+            <button class="btn btn--sm" id="tokAddChain" type="button" title="Add Robinhood Chain to your wallet">ADD</button>
+          </div>
+          <div class="trow">
+            <span class="trow__k">LAUNCHPAD</span>
+            <code class="trow__v">PONS FAMILY → UNISWAP V4 (LOCKED LP)</code>
             <span></span>
           </div>
         </div>
         <div class="token__actions">
-          <a class="btn btn--primary" href="#" id="buyBtn">[ BUY $WSEX ]</a>
-          <a class="btn btn--ghost" href="#" id="chartBtn">[ VIEW CHART ]</a>
+          <a class="btn btn--primary" href="#" id="buyBtn" target="_blank" rel="noopener">[ BUY $WSEX ]</a>
+          <a class="btn btn--ghost" href="#" id="chartBtn" target="_blank" rel="noopener">[ VIEW CHART ]</a>
+          <a class="btn btn--ghost" href="#" id="explorerBtn" target="_blank" rel="noopener" hidden>[ EXPLORER ]</a>
         </div>
       </div>
       <div class="app__statusbar">
@@ -461,10 +507,10 @@ Type HELP for a list of commands.
       <div class="footer__status">SYSTEM STATUS:<br /><b class="c-green">STILL RUNNING.</b></div>
       <p class="footer__hint">It is now safe to turn off your computer.<br />You won't.</p>
       <div class="footer__social">
-        <a href="#" aria-label="X (Twitter)" title="X">
+        <a href="#" id="linkX" aria-label="X (Twitter)" title="X" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L22.8 22h-6.9l-5.4-7.06L4.3 22H1.04l8.02-9.17L.5 2h7.07l4.88 6.45L18.24 2Zm-1.2 18h1.8L7.1 3.9H5.17L17.04 20Z"/></svg>
         </a>
-        <a href="#" aria-label="Telegram" title="Telegram">
+        <a href="#" id="linkTg" aria-label="Telegram" title="Telegram" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21.95 3.3 18.6 20.2c-.25 1.1-.9 1.4-1.85.87l-5.1-3.76-2.46 2.37c-.27.27-.5.5-1.03.5l.37-5.2 9.46-8.55c.41-.37-.09-.57-.64-.2L5.66 13.6l-5.03-1.57c-1.1-.34-1.12-1.1.23-1.62L20.5 2.62c.91-.34 1.7.2 1.45.68Z"/></svg>
         </a>
       </div>
@@ -475,6 +521,20 @@ Type HELP for a list of commands.
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <!-- Wallet chooser (EIP-6963) -->
+  <div class="modal" id="walletModal" hidden>
+    <div class="win modal__win" role="dialog" aria-modal="true" aria-labelledby="walletModalTitle">
+      <div class="win__bar"><span class="win__title" id="walletModalTitle"><i class="ico ico--sys"></i> CONNECT WALLET</span><span class="win__ctl"><b class="modal-close">x</b></span></div>
+      <div class="win__body modal__body">
+        <p class="modal__hint">SELECT A WALLET. READS ONLY — NO TRANSACTION IS SIGNED.</p>
+        <div class="wallet-list" id="walletList"></div>
+        <p class="modal__none" id="walletNone" hidden>NO WALLET DETECTED.<br />Install <a href="https://robinhood.com/us/en/about/crypto/wallet/" target="_blank" rel="noopener">Robinhood Wallet</a>, <a href="https://metamask.io" target="_blank" rel="noopener">MetaMask</a> or <a href="https://rabby.io" target="_blank" rel="noopener">Rabby</a>, then reload.</p>
+        <div class="warn__btns"><button class="btn btn--sm btn--ghost modal-close" type="button">CANCEL</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
