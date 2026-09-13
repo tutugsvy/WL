@@ -46,23 +46,107 @@
       return await r.json();
     } finally { clearTimeout(t); }
   };
+async function refreshRealMarketData() {
+  try {
+    const assets = CFG.MARKET_DATA?.assets || [];
 
-  const MARKETS = [
-    { sym: "WSEX", name: "WALLSTREET.EXE", price: 0.0421, chg: 42.0, vol: 18_400_000, kind: "crypto", status: "vol" },
-    { sym: "NVDA", name: "NVIDIA", price: 1184.32, chg: 4.82, vol: 41_200_000, kind: "eq" },
-    { sym: "AAPL", name: "APPLE", price: 231.14, chg: -1.24, vol: 58_900_000, kind: "eq" },
-    { sym: "TSLA", name: "TESLA", price: 402.77, chg: 2.91, vol: 96_100_000, kind: "eq" },
-    { sym: "MSFT", name: "MICROSOFT", price: 512.6, chg: 1.42, vol: 22_300_000, kind: "eq" },
-    { sym: "AMZN", name: "AMAZON", price: 218.05, chg: 0.63, vol: 34_700_000, kind: "eq" },
-    { sym: "GME", name: "GAMESTOP", price: 28.41, chg: 12.47, vol: 88_800_000, kind: "eq", status: "halt" },
-    { sym: "BTC", name: "BITCOIN", price: 118_420, chg: 3.42, vol: 31_000_000_000, kind: "crypto" },
-    { sym: "ETH", name: "ETHEREUM", price: 4_612.5, chg: 2.17, vol: 18_600_000_000, kind: "crypto" },
-    { sym: "SOL", name: "SOLANA", price: 241.9, chg: -3.08, vol: 4_100_000_000, kind: "crypto" },
-    { sym: "SPX", name: "S&P 500", price: 6_812.4, chg: 0.41, vol: 0, kind: "idx" },
-    { sym: "NDX", name: "NASDAQ 100", price: 24_910.2, chg: 0.88, vol: 0, kind: "idx" },
-    { sym: "DJI", name: "DOW JONES", price: 46_120.7, chg: -0.12, vol: 0, kind: "idx" },
-    { sym: "VIX", name: "VOLATILITY", price: 48.2, chg: 31.7, vol: 0, kind: "idx", status: "vol" },
-  ];
+    if (!assets.length) return;
+
+    const addresses = assets
+      .map(a => a.address)
+      .filter(isAddr)
+      .map(a => a.toLowerCase());
+
+    if (!addresses.length) return;
+
+    const url =
+      `${GT}/simple/networks/${CHAIN.geckoTerminalNetwork}/token_price/` +
+      `${addresses.join(",")}?include_24hr_price_change=true`;
+
+    const res = await getJSON(url);
+
+    const attrs = res?.data?.attributes || {};
+    const prices = attrs.token_prices || {};
+    const changes = attrs.h24_price_change_percentage || {};
+
+    for (const asset of assets) {
+      const market = MARKETS.find(
+        m => m.sym === asset.symbol
+      );
+
+      if (!market) continue;
+
+      const address = asset.address.toLowerCase();
+
+      const price = Number(prices[address]);
+      const change = Number(changes[address]);
+
+      if (Number.isFinite(price)) {
+        market.price = price;
+        market.real = true;
+      }
+
+      if (Number.isFinite(change)) {
+        market.chg = change;
+      }
+    }
+
+    renderAll();
+
+  } catch (err) {
+    console.error("REAL MARKET DATA ERROR:", err);
+  }
+}
+const MARKETS = [
+  {
+    sym: "WSEX",
+    name: "WALLSTREET.EXE",
+    price: 0,
+    chg: 0,
+    vol: 0,
+    kind: "crypto",
+  },
+  {
+    sym: "NVDA",
+    name: "NVIDIA",
+    price: 0,
+    chg: 0,
+    vol: 0,
+    kind: "eq",
+  },
+  {
+    sym: "AAPL",
+    name: "APPLE",
+    price: 0,
+    chg: 0,
+    vol: 0,
+    kind: "eq",
+  },
+  {
+    sym: "TSLA",
+    name: "TESLA",
+    price: 0,
+    chg: 0,
+    vol: 0,
+    kind: "eq",
+  },
+  {
+    sym: "AMZN",
+    name: "AMAZON",
+    price: 0,
+    chg: 0,
+    vol: 0,
+    kind: "eq",
+  },
+  {
+    sym: "SPY",
+    name: "SPDR S&P 500 ETF",
+    price: 0,
+    chg: 0,
+    vol: 0,
+    kind: "eq",
+  },
+];
 
   const boot = $("#boot");
   const bootBar = $("#bootBar");
@@ -974,13 +1058,7 @@
       $("#rowCount").textContent = MARKETS.length;
     };
     render();
-    setInterval(() => {
-      const m = pick(MARKETS);
-      if (m.real) return; 
-      const d = rand(-0.3, 0.35);
-      m.chg += d; m.price *= 1 + d / 100; if (m.vol) m.vol *= 1 + rand(0, 0.004);
-      paintRow(m, d);
-    }, 1000);
+
     function paintRow(m, d) {
       const tr = $(`tr[data-sym="${m.sym}"]`, tb);
       if (!tr) return;
@@ -1113,3 +1191,10 @@
   console.log("%cWALLSTREET.EXE", "font: bold 28px Inter, sans-serif; color:#3dff7a");
   console.log("%cSYSTEM STATUS: STILL RUNNING.\nType HELP in the terminal.", "color:#8a939c; font-family: monospace");
 })();
+
+refreshRealMarketData();
+
+setInterval(
+  refreshRealMarketData,
+  CFG.MARKET_DATA?.refreshMs || 15000
+);
