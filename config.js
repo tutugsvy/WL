@@ -22,7 +22,7 @@
    ========================================================================== */
 window.WSEX_CONFIG = {
   TOKEN: {
-    address: "0x0000000000000000000000000000000000000000", // ← ISI SETELAH LAUNCH
+    address: "0xac0f8c8a0dfdcaa415382622f0e3da23585d1b77", // ← ISI SETELAH LAUNCH
     symbol: "WSEX",
     name: "WALLSTREET.EXE",
     decimals: 18,
