@@ -1062,6 +1062,31 @@ liveTickers();
       $("#rowCount").textContent = MARKETS.length;
     };
     render();
+    document.addEventListener("wsex:market", () => {
+  MARKETS.forEach((m) => {
+    if (!m.real) return;
+
+    m.status = "live";
+    paintRow(m, m.chg);
+  });
+});
+
+setInterval(() => {
+  const m = pick(MARKETS);
+
+  if (m.real) return;
+
+  const d = rand(-0.3, 0.35);
+
+  m.chg += d;
+  m.price *= 1 + d / 100;
+
+  if (m.vol) {
+    m.vol *= 1 + rand(0, 0.004);
+  }
+
+  paintRow(m, d);
+}, 1000);
 
     function paintRow(m, d) {
       const tr = $(`tr[data-sym="${m.sym}"]`, tb);
