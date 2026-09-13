@@ -1,6 +1,6 @@
 window.WSEX_CONFIG = {
   TOKEN: {
-    address: "0x0000000000000000000000000000000000000000", 
+    address: "0xa5af66ba606e2a322db1695f0eb7181bb7cd6d70", 
     symbol: "WSEX",
     name: "WALLSTREET.EXE",
     decimals: 18,
