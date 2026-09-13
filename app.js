@@ -65,9 +65,7 @@ async function refreshRealMarketData() {
       return;
     }
 
-    const url =
-      `${GT}/simple/networks/${CHAIN.geckoTerminalNetwork}/token_price/` +
-      `${addresses.join(",")}?include_24hr_price_change=true`;
+    const url = "https://chart.wallstreetexe.site/market-data";
 
     console.log("MARKET DATA REQUEST:", url);
 
