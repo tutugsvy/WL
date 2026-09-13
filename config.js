@@ -20,7 +20,7 @@ window.WSEX_CONFIG = {
   },
 
   PRICE: {
-    source: "geckoterminal",
+    source: "pons",
     refreshMs: 30_000,     
     pons: {
       chartUrl: "https://www.ponsfamily.com/api/pons-v2-market/{address}/chart?range=1h",
