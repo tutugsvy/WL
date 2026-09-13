@@ -691,7 +691,7 @@
     const onConnected = () => {
       S.wallet = st.address;
       btn.classList.add("is-on"); btnText.textContent = shortAddr(st.address).toUpperCase(); btn.title = "Click to disconnect";
-      pfMode.textContent = "ON-CHAIN · " + CHAIN.name.toUpperCase(); pfMode.className = "badge badge--live";
+      pfMode.textContent = "ON-CHAIN"; pfMode.className = "badge badge--live";
       pfBars.hidden = true; pfHold.hidden = false; pfConnect.hidden = true; pfAddChain.hidden = false;
       pfAddr.hidden = false; pfAddr.innerHTML = `<a href="${CHAIN.explorer}/address/${st.address}" target="_blank" rel="noopener">${shortAddr(st.address)}</a> · <a href="#" id="pfDisc">DISCONNECT</a>`;
       $("#pfDisc").addEventListener("click", (e) => { e.preventDefault(); disconnect(); });
