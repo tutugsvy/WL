@@ -294,18 +294,26 @@ const MARKETS = [
 
 function liveTickers() {
   const rows = $$("#liveTickers tr");
-  const state = rows.map((r) => ({
-    el: r.querySelector(".tk__pct"),
-    v: parseFloat(r.dataset.base)
-  }));
 
-  const paint = (s) => {
-    s.el.textContent = fmtPct(s.v);
-    s.el.classList.toggle("up", s.v >= 0);
-    s.el.classList.toggle("down", s.v < 0);
-  };
+  function paintRow(row) {
+    const sym = row.dataset.sym;
+    const market = MARKETS.find((m) => m.sym === sym);
+    const el = row.querySelector(".tk__pct");
 
-  state.forEach(paint);
+    if (!market || !el) return;
+
+    const value = Number(market.chg) || 0;
+
+    el.textContent = fmtPct(value);
+    el.classList.toggle("up", value >= 0);
+    el.classList.toggle("down", value < 0);
+  }
+
+  rows.forEach(paintRow);
+
+  document.addEventListener("wsex:market", () => {
+    rows.forEach(paintRow);
+  });
 }
 
 liveTickers();
