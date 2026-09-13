@@ -47,7 +47,7 @@ window.WSEX_CONFIG = {
   LINKS: {
     buy: "https://www.ponsfamily.com/launchpad/{address}",
     chart: "https://www.geckoterminal.com/robinhood/tokens/{address}",
-    x: "",
+    x: "https://x.com/WallstreetExe",
     telegram: "",
   },
 
