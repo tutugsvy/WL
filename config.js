@@ -23,7 +23,7 @@ window.WSEX_CONFIG = {
     source: "pons",
     refreshMs: 30_000,     
     pons: {
-      chartUrl: "https://www.ponsfamily.com/api/pons-v2-market/{address}/chart?range=1h",
+      chartUrl: "http://104.245.34.139:3000/pons-chart?address={address}&range=5m",
       corsProxy: "",
     },
   },
