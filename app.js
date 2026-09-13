@@ -73,7 +73,7 @@ async function refreshRealMarketData() {
 
     console.log("MARKET DATA RESPONSE:", res);
 
-    const attrs = res?.data?.attributes || {};
+    const attrs = res?.data?.data?.attributes || {};
     const prices = attrs.token_prices || {};
     const changes = attrs.h24_price_change_percentage || {};
 
