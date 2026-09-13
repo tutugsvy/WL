@@ -235,17 +235,17 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   mix-blend-mode: screen;
 }
 @keyframes glow-breathe { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
-.layer--data { opacity: 0.85; }
+.layer--data { width: 100%; height: 100%; opacity: 0.85; }
 
 .hero__content { position: relative; text-align: center; max-width: 900px; width: 100%; }
 .hero__term {
-  position: absolute; left: 50%; top: -70px; transform: translateX(-50%) rotate(-0.4deg);
-  width: min(560px, 92vw); opacity: 0.55; z-index: -1;
+  position: absolute; left: 50%; top: -150px; transform: translateX(-72%) rotate(-0.6deg);
+  width: min(520px, 92vw); opacity: 0.5; z-index: -1;
   text-align: left;
 }
 .hero__termbody { margin: 0; min-height: 132px; font-size: 12px; line-height: 1.7; color: var(--green); white-space: pre-wrap; }
 
-.hero__sys { font-family: var(--pixel); font-size: 22px; letter-spacing: 0.16em; color: var(--green); margin: 40px 0 6px; }
+.hero__sys { font-family: var(--pixel); font-size: 22px; letter-spacing: 0.16em; color: var(--green); margin: 60px 0 6px; text-shadow: 0 0 12px rgba(61, 255, 122, 0.4), 0 1px 0 #000; }
 .hero__title {
   font-family: var(--sans); font-weight: 800; letter-spacing: -0.02em; line-height: 0.95;
   font-size: clamp(44px, 9vw, 118px); margin: 0 0 22px;
@@ -380,15 +380,16 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .desk__grid {
   position: absolute; inset: -20% 0 0 0;
   background-image:
-    linear-gradient(rgba(61, 255, 122, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(61, 255, 122, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(61, 255, 122, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61, 255, 122, 0.12) 1px, transparent 1px);
   background-size: 60px 60px;
   transform: perspective(900px) rotateX(55deg) translateY(10%) scale(1.6);
   transform-origin: center bottom;
   mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 80%);
   -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 80%);
 }
-.desk__skyline { position: absolute; left: 0; right: 0; bottom: 30px; height: 46%; background: url("assets/skyline.png") center bottom / auto 100% no-repeat; opacity: 0.16; }
+.desk__skyline { position: absolute; left: 0; right: 0; bottom: 30px; height: 46%; background: url("assets/skyline.png") center bottom / auto 100% no-repeat; opacity: 0.22; }
+.desk::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(61, 255, 122, 0.08), transparent 70%); }
 .desk__particles { position: absolute; inset: 0; width: 100%; height: 100%; }
 .desk__tape { position: absolute; left: 0; right: 0; bottom: 34px; height: 20px; white-space: nowrap; overflow: hidden; font-size: 10px; letter-spacing: 0.1em; color: rgba(61, 255, 122, 0.25); }
 .desk__tape span { display: inline-block; padding-left: 100%; animation: tape2 40s linear infinite; }
@@ -601,6 +602,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .chaos__grid { grid-template-columns: repeat(2, 1fr); }
   .chaos__bottom, .about__grid { grid-template-columns: 1fr; }
   .about__visual { max-width: 520px; margin: 0 auto; }
+  .about__popup { right: 0; }
   /* Desktop -> simplified: windows stacked, still on desk background */
   .desk { height: auto; padding: 18px 14px 50px; display: flex; flex-direction: column; gap: 14px; }
   .desk__icons { display: none; }
@@ -613,7 +615,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   body { font-size: 13px; }
   .section { padding: 80px 16px; }
   .hero { padding: 100px 16px 90px; }
-  .hero__title { font-size: clamp(38px, 12vw, 64px); }
+  .hero__title { font-size: clamp(30px, 9.4vw, 64px); letter-spacing: -0.03em; }
+  .hero__term { transform: translateX(-50%) rotate(-0.6deg); top: -130px; width: 92vw; }
+  .hero__termbody { min-height: 100px; font-size: 11px; }
+  .hero__sys { font-size: 18px; }
   .hero__cta .btn { width: 100%; }
   .app__grid { grid-template-columns: 1fr; grid-template-areas: "status" "tickers" "chart" "log" "portfolio"; }
   .panel__body--chart { min-height: 240px; }
