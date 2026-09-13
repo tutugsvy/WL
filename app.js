@@ -1,7 +1,3 @@
-/* ==========================================================================
-   WALLSTREET.EXE — app.js
-   All data is fictional. Nothing here is real except the volatility.
-   ========================================================================== */
 (() => {
   "use strict";
 
@@ -12,7 +8,7 @@
   const pad = (n) => String(n).padStart(2, "0");
   const fmtPct = (v) => `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
   const fmtUsd = (v, d = 2) => "$" + v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
-  // Prices of freshly launched tokens can be 0.00000036 — pick decimals from magnitude.
+  
   const fmtPrice = (p) => {
     if (!Number.isFinite(p)) return "—";
     if (p >= 1000) return p.toLocaleString("en-US", { maximumFractionDigits: 2 });
@@ -29,9 +25,7 @@
 
   const GREEN = "#3dff7a", RED = "#ff4d4d", GRAY = "#8a939c", DIM = "rgba(61,255,122,0.08)";
 
-  /* ------------------------------------------------------------------------
-     Config (config.js) + shared live state
-     ------------------------------------------------------------------------ */
+  
   const CFG = window.WSEX_CONFIG || {};
   const TOKEN = Object.assign({ address: "0x0000000000000000000000000000000000000000", symbol: "WSEX", decimals: 18, totalSupply: 1e9 }, CFG.TOKEN);
   const CHAIN = Object.assign({ id: 4663, hexId: "0x1237", name: "Robinhood Chain", rpc: "https://rpc.mainnet.chain.robinhood.com", explorer: "https://robinhoodchain.blockscout.com", currency: { name: "Ether", symbol: "ETH", decimals: 18 }, weth: "", geckoTerminalNetwork: "robinhood", dexscreenerChain: "robinhood" }, CFG.CHAIN);
@@ -43,7 +37,7 @@
   const isAddr = (a) => /^0x[0-9a-fA-F]{40}$/.test(a || "") && a.toLowerCase() !== ZERO;
   const LAUNCHED = isAddr(TOKEN.address);
   const withAddr = (url) => (url || "").replace(/\{address\}/g, TOKEN.address);
-  // S.feed = latest real $WSEX quote (or null), S.wallet = connected address (or null)
+  
   const S = { feed: null, wallet: null };
 
   const getJSON = async (url, ms = 9000) => {
@@ -56,9 +50,7 @@
     } finally { clearTimeout(t); }
   };
 
-  /* ------------------------------------------------------------------------
-     Fictional market universe
-     ------------------------------------------------------------------------ */
+  
   const MARKETS = [
     { sym: "WSEX", name: "WALLSTREET.EXE", price: 0.0421, chg: 42.0, vol: 18_400_000, kind: "crypto", status: "vol" },
     { sym: "NVDA", name: "NVIDIA", price: 1184.32, chg: 4.82, vol: 41_200_000, kind: "eq" },
@@ -76,9 +68,7 @@
     { sym: "VIX", name: "VOLATILITY", price: 48.2, chg: 31.7, vol: 0, kind: "idx", status: "vol" },
   ];
 
-  /* ------------------------------------------------------------------------
-     Boot screen
-     ------------------------------------------------------------------------ */
+  
   const boot = $("#boot");
   const bootBar = $("#bootBar");
   const bootStatus = $("#bootStatus");
@@ -116,9 +106,7 @@
     window.addEventListener("keydown", finishBoot, { once: true });
   }
 
-  /* ------------------------------------------------------------------------
-     Clocks
-     ------------------------------------------------------------------------ */
+  
   const started = Date.now();
   const tickClock = () => {
     const d = new Date();
@@ -132,9 +120,7 @@
   tickClock();
   setInterval(tickClock, 1000);
 
-  /* ------------------------------------------------------------------------
-     Hero terminal typing
-     ------------------------------------------------------------------------ */
+  
   const heroLines = [
     "C:\\> WALLSTREET.EXE",
     "INITIALIZING WALLSTREET.EXE...",
@@ -159,9 +145,7 @@
     step();
   }
 
-  /* ------------------------------------------------------------------------
-     Hero background canvas: floating market data + particles
-     ------------------------------------------------------------------------ */
+  
   function heroCanvas() {
     const cv = $("#heroCanvas");
     const ctx = cv.getContext("2d");
@@ -200,7 +184,7 @@
         it.y -= it.vy * it.z;
         it.life += 0.004;
         if (it.y < -20) { it.y = h + 20; it.x = Math.random() * w; it.text = `${pick(syms)} ${(rand(-5, 8)).toFixed(2)}`; it.up = Math.random() > 0.35; }
-        // keep center readable: fade near center
+        
         const dx = (it.x - cx) / (w * 0.5), dy = (it.y - cy) / (h * 0.5);
         const d = Math.sqrt(dx * dx + dy * dy);
         const centerFade = Math.min(1, Math.max(0, (d - 0.35) / 0.4));
@@ -221,23 +205,19 @@
   }
   heroCanvas();
 
-  /* ------------------------------------------------------------------------
-     Ticker tape
-     ------------------------------------------------------------------------ */
+  
   function buildTape() {
     const tape = $("#tape");
     const items = MARKETS.map((m) =>
       `<span class="tape__item"><b>${m.sym}</b> ${fmtPrice(m.price)} <span class="${m.chg >= 0 ? "up" : "down"}">${fmtPct(m.chg)}</span></span>`
     ).join("");
-    tape.innerHTML = items + items; // duplicated for seamless loop
+    tape.innerHTML = items + items; 
     const dt = $("#deskTape");
     dt.innerHTML = `<span>${MARKETS.map((m) => `${m.sym} ${fmtPct(m.chg)}`).join("   ·   ")}   ·   WALLSTREET.EXE IS RUNNING   ·   DO NOT CLOSE THIS WINDOW   ·   </span>`;
   }
   buildTape();
 
-  /* ------------------------------------------------------------------------
-     Live tickers (panel + desktop)
-     ------------------------------------------------------------------------ */
+  
   function liveTickers() {
     const rows = $$("#liveTickers tr");
     const state = rows.map((r) => ({ el: r.querySelector(".tk__pct"), v: parseFloat(r.dataset.base) }));
@@ -259,9 +239,7 @@
   }
   liveTickers();
 
-  /* ------------------------------------------------------------------------
-     Candlestick engine
-     ------------------------------------------------------------------------ */
+  
   function makeSeries(n, start) {
     const out = [];
     let p = start;
@@ -281,7 +259,7 @@
     const ctx = canvas.getContext("2d");
     const n = opts.count || 60;
     let data = makeSeries(n, opts.start || 0.03);
-    let real = false; // true once fed with on-chain data → random drift stops
+    let real = false; 
     let w, h, dpr;
     const resize = () => {
       dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -292,7 +270,7 @@
     resize();
     window.addEventListener("resize", () => { resize(); draw(); });
 
-    // live candle
+    
     let live = { ...data[data.length - 1] };
     live = { o: live.c, h: live.c, l: live.c, c: live.c, v: 0.2 };
     let phase = 0;
@@ -309,7 +287,7 @@
       const step = cw / all.length;
       const bw = Math.max(1, step * 0.62);
 
-      // grid
+      
       if (!opts.mini) {
         ctx.strokeStyle = "rgba(255,255,255,0.05)";
         ctx.lineWidth = 1;
@@ -324,7 +302,7 @@
           ctx.fillText(fmtPrice(val), w - padR + 8, yy + 3);
         }
         ctx.setLineDash([]);
-        // vertical
+        
         for (let i = 0; i < all.length; i += 10) {
           const xx = padL + i * step;
           ctx.strokeStyle = "rgba(255,255,255,0.03)";
@@ -332,7 +310,7 @@
         }
       }
 
-      // volume
+      
       if (opts.volume) {
         const vb = h - padB + 8, vh = padB - 16;
         for (let i = 0; i < all.length; i++) {
@@ -345,7 +323,7 @@
         }
       }
 
-      // candles
+      
       for (let i = 0; i < all.length; i++) {
         const k = all[i];
         const x = padL + i * step + step / 2;
@@ -358,14 +336,14 @@
         if (up) { ctx.fillRect(x - bw / 2, top, bw, bh); }
         else { ctx.fillRect(x - bw / 2, top, bw, bh); }
         if (i === all.length - 1 && !opts.mini) {
-          // live glow
+          
           ctx.shadowColor = col; ctx.shadowBlur = 10;
           ctx.fillRect(x - bw / 2, top, bw, bh);
           ctx.shadowBlur = 0;
         }
       }
 
-      // last price line
+      
       if (!opts.mini) {
         const ly = y(live.c);
         ctx.strokeStyle = live.c >= live.o ? GREEN : RED;
@@ -378,7 +356,7 @@
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = "left";
         ctx.fillText(fmtPrice(live.c), w - padR + 7, ly + 4);
-        // watermark
+        
         ctx.fillStyle = DIM;
         ctx.font = 'bold 28px Inter, sans-serif';
         ctx.textAlign = "left";
@@ -410,7 +388,7 @@
       get data() { return data; },
       get price() { return live.c; },
       get real() { return real; },
-      // Replace history with real candles [{o,h,l,c,v}] (v = raw volume, normalised here).
+      
       setSeries(candles) {
         if (!candles || !candles.length) return;
         const maxV = Math.max(...candles.map((k) => k.v || 0)) || 1;
@@ -420,7 +398,7 @@
         real = true;
         draw();
       },
-      // Push the latest trade price into the live candle.
+      
       setLive(p) {
         if (!Number.isFinite(p) || p <= 0) return;
         if (!real) { data = makeSeries(n, p); real = true; }
@@ -435,7 +413,7 @@
     count: 64, start: 0.0312, volume: true,
     onPrice: (p, base) => {
       priceEl.textContent = fmtPrice(p);
-      // Real feed → 24h change from the aggregator; simulated → change vs first candle.
+      
       const c = S.feed ? S.feed.change24h : ((p - base) / base) * 100;
       chgEl.textContent = fmtPct(c) + (S.feed && S.feed.changeLabel ? " " + S.feed.changeLabel : "");
       const up = c >= 0;
@@ -445,9 +423,7 @@
   });
   candleChart($("#deskChart"), { count: 40, start: 0.04, mini: true });
 
-  /* ------------------------------------------------------------------------
-     System log (panel)
-     ------------------------------------------------------------------------ */
+  
   const sysMsgs = [
     "MARKET DATA RECEIVED", "VOLATILITY INCREASING", "BUY ORDERS DETECTED", "WALLSTREET.EXE RUNNING",
     "SELL PRESSURE: MODERATE", "LIQUIDITY CHECK: OK", "USER PANIC DETECTED", "ORDER BOOK REFRESHED",
@@ -465,12 +441,12 @@
       ul.appendChild(li);
       while (ul.children.length > 8) ul.removeChild(ul.firstChild);
     }, 2200);
-    // latency + ping
+    
     setInterval(() => {
       $("#latency").textContent = Math.round(rand(8, 46)) + "ms";
       $("#mPing").textContent = Math.round(rand(9, 38)) + "ms";
     }, 1800);
-    // portfolio drift (simulated; paused while a real wallet is connected)
+    
     let v = 124921.42, c = 8.42;
     setInterval(() => {
       if (S.wallet) return;
@@ -482,7 +458,7 @@
       el.textContent = fmtPct(c);
       el.className = "pf__value " + (c >= 0 ? "c-green" : "c-red");
     }, 1400);
-    // meters
+    
     const meters = [["mCpu", "mCpuV", 25, 90], ["mMem", "mMemV", 50, 82], ["mNet", "mNetV", 60, 99]];
     setInterval(() => {
       for (const [b, v, lo, hi] of meters) {
@@ -494,9 +470,7 @@
   }
   sysLog();
 
-  /* ------------------------------------------------------------------------
-     Robinhood Chain JSON-RPC (public endpoint, CORS-enabled)
-     ------------------------------------------------------------------------ */
+  
   const rpcBatch = async (calls) => {
     const body = calls.map((c, i) => ({ jsonrpc: "2.0", id: i + 1, method: c.method, params: c.params }));
     const r = await fetch(CHAIN.rpc, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
@@ -513,10 +487,7 @@
   };
   const balanceOfCall = (token, owner) => ({ method: "eth_call", params: [{ to: token, data: "0x70a08231" + owner.slice(2).toLowerCase().padStart(64, "0") }, "latest"] });
 
-  /* ------------------------------------------------------------------------
-     $WSEX price feed — normalised quote from the configured source.
-     { priceUsd, change24h, changeLabel?, volume24h, fdvUsd, liquidityUsd, poolAddress, source, candles? }
-     ------------------------------------------------------------------------ */
+  
   const GT = `https://api.geckoterminal.com/api/v2`;
   const feedSources = {
     async geckoterminal(addr) {
@@ -544,7 +515,7 @@
         fdvUsd: +(p.fdv || 0), liquidityUsd: +((p.liquidity || {}).usd || 0), poolAddress: p.pairAddress, source: "DEXSCREENER",
       };
     },
-    // ponsfamily.com does not send CORS headers → only works through PRICE.pons.corsProxy.
+    
     async pons(addr) {
       const url = withAddr(PRICE.pons.chartUrl).replace(/\{address\}/g, addr);
       const full = PRICE.pons.corsProxy ? PRICE.pons.corsProxy + encodeURIComponent(url) : url;
@@ -553,7 +524,7 @@
       if (!pts.length) throw new Error("PONS: NO POINTS");
       const q = Number(r.quoteUsd) || 1;
       const first = pts[0], last = pts[pts.length - 1];
-      // 1-minute candles from the tick series
+      
       const buckets = new Map();
       for (const p of pts) {
         const k = Math.floor(p.t / 60) * 60;
@@ -585,15 +556,15 @@
 
     const apply = (q) => {
       S.feed = q;
-      // main chart
+      
       if (q.candles && q.candles.length) mainChart.setSeries(q.candles);
       mainChart.setLive(q.priceUsd);
       setBadge(badge, `LIVE · ${q.source}`, "live");
-      // fictional market table row → real numbers, and stop random drift for it
+      
       const m = MARKETS[0];
       m.price = q.priceUsd; m.chg = q.change24h; m.vol = q.volume24h; m.real = true;
       document.dispatchEvent(new CustomEvent("wsex:price", { detail: q }));
-      // TOKEN.INF market row
+      
       tokMarket.hidden = false;
       setBadge(tokSrc, q.source, "live");
       $("#tokPrice").textContent = "$" + fmtPrice(q.priceUsd);
@@ -607,9 +578,9 @@
       try {
         const q = await src(TOKEN.address);
         if (!Number.isFinite(q.priceUsd) || q.priceUsd <= 0) throw new Error("NO PRICE");
-        // OHLCV history from GeckoTerminal (works for any source that yields a pool address); refresh every 5 min
+        
         if (!q.candles && q.poolAddress && (q.poolAddress !== lastPool || Date.now() - candlesAt > 300000)) {
-          try { q.candles = await fetchCandles(q.poolAddress); lastPool = q.poolAddress; candlesAt = Date.now(); } catch (_) { /* keep previous history */ }
+          try { q.candles = await fetchCandles(q.poolAddress); lastPool = q.poolAddress; candlesAt = Date.now(); } catch (_) {  }
         }
         apply(q);
       } catch (e) {
@@ -621,12 +592,9 @@
   }
   priceFeed();
 
-  /* ------------------------------------------------------------------------
-     Wallet: EIP-6963 discovery → address only. All balance reads go through
-     the public Robinhood Chain RPC, so the wallet's active network doesn't matter.
-     ------------------------------------------------------------------------ */
+  
   function wallet() {
-    const found = new Map(); // rdns → { info, provider }
+    const found = new Map(); 
     window.addEventListener("eip6963:announceProvider", (e) => { const d = e.detail; if (d && d.info && d.provider) found.set(d.info.rdns, d); });
     window.dispatchEvent(new Event("eip6963:requestProvider"));
     const providers = () => {
@@ -703,14 +671,14 @@
       st.timer = setInterval(refreshHoldings, 60000);
     };
 
-    /* --- holdings: native ETH + $WSEX + watchlist (+ Blockscout token list, best-effort) --- */
+    
     const loadHoldings = async (owner) => {
-      const tokens = new Map(); // addr(lower) → { symbol, address, decimals, qty }
+      const tokens = new Map(); 
       const add = (t) => { const k = t.address.toLowerCase(); if (!tokens.has(k)) tokens.set(k, { ...t, address: k }); return tokens.get(k); };
       if (LAUNCHED) add({ symbol: TOKEN.symbol, address: TOKEN.address, decimals: TOKEN.decimals, wsex: true });
       for (const t of HOLD.watchlist || []) if (isAddr(t.address)) add(t);
 
-      // Blockscout: every ERC-20 the wallet holds (may be Cloudflare-blocked → skipped)
+      
       if (HOLD.useBlockscout) {
         try {
           const r = await getJSON(`${CHAIN.explorer}/api/v2/addresses/${owner}/token-balances`, 6000);
@@ -720,16 +688,16 @@
             t.qty = Number(it.value) / 10 ** t.decimals;
             if (it.token.exchange_rate) t.bsPrice = +it.token.exchange_rate;
           }
-        } catch (_) { /* best-effort */ }
+        } catch (_) {  }
       }
 
-      // RPC: native balance + balanceOf for everything we know about
+      
       const list = [...tokens.values()];
       const res = await rpcBatch([{ method: "eth_getBalance", params: [owner, "latest"] }, ...list.map((t) => balanceOfCall(t.address, owner))]);
       const ethQty = hexToUnits(res[0], 18);
       list.forEach((t, i) => { try { t.qty = hexToUnits(res[i + 1], t.decimals); } catch (_) { t.qty = t.qty || 0; } });
 
-      // Prices: GeckoTerminal multi-token (incl. WETH → ETH/USD), chunked by 30
+      
       const prices = {}, chg = {};
       const addrs = [...new Set([CHAIN.weth, ...list.filter((t) => t.qty > 0).map((t) => t.address)].filter(isAddr).map((a) => a.toLowerCase()))];
       for (let i = 0; i < addrs.length; i += 30) {
@@ -738,7 +706,7 @@
           const a = r.data.attributes;
           for (const k in a.token_prices || {}) prices[k.toLowerCase()] = +a.token_prices[k];
           for (const k in a.h24_price_change_percentage || {}) chg[k.toLowerCase()] = +a.h24_price_change_percentage[k];
-        } catch (_) { /* prices stay unknown */ }
+        } catch (_) {  }
       }
       const ethPrice = prices[(CHAIN.weth || "").toLowerCase()];
       const rows = [{ symbol: CHAIN.currency.symbol, qty: ethQty, priceUsd: ethPrice, chg: chg[(CHAIN.weth || "").toLowerCase()], native: true }];
@@ -765,7 +733,7 @@
       if (!owner) return;
       try {
         const h = await loadHoldings(owner);
-        if (owner !== st.address) return; // account switched mid-flight
+        if (owner !== st.address) return; 
         st.holdings = h;
         render(h);
       } catch (e) {
@@ -783,7 +751,7 @@
       const top = h.rows.filter((r) => r.qty > 0 || r.native).slice(0, 8);
       pfHold.innerHTML = top.map((r) => `<div class="hold${r.wsex ? " hold--wsex" : ""}"><b>${r.wsex ? "$" : ""}${r.symbol}</b><span class="hold__qty">${fmtQty(r.qty)}</span><span class="hold__usd">${Number.isFinite(r.usd) ? fmtUsd(r.usd) : "—"}</span></div>`).join("")
         + `<div class="hold__note">${h.unpriced ? `${h.unpriced} UNPRICED · ` : ""}PRICES: GECKOTERMINAL · RPC: ${CHAIN.name.toUpperCase()}${LAUNCHED ? "" : " · $WSEX: PRE-LAUNCH"}</div>`;
-      // desktop window
+      
       $("#deskPf").textContent = fmtUsd(h.total);
       const dc = $("#deskPfChg"); dc.textContent = pfChange.textContent; dc.className = up ? "c-green" : "c-red";
       $("#deskPfHeld").textContent = LAUNCHED ? fmtQty(h.wsexQty) : "PRE-LAUNCH";
@@ -810,7 +778,7 @@
     $("#tokAddChain").addEventListener("click", addChain);
     document.addEventListener("wsex:price", () => { if (st.holdings) render(st.holdings); });
 
-    // silent reconnect (providers announce asynchronously)
+    
     const saved = localStorage.getItem(KEY);
     if (saved) setTimeout(() => { const p = providers().find((x) => x.info.rdns === saved); if (p) connect(p, true); }, 400);
 
@@ -822,9 +790,7 @@
   }
   const W = wallet();
 
-  /* ------------------------------------------------------------------------
-     Links + contract from config
-     ------------------------------------------------------------------------ */
+  
   (() => {
     $("#contractAddr").textContent = TOKEN.address;
     $("#contractCopy").dataset.copy = TOKEN.address;
@@ -837,9 +803,7 @@
     for (const [sel, url] of soc) { const a = $(sel); if (url) a.href = url; else a.addEventListener("click", (e) => { e.preventDefault(); toast("LINK: TBA"); }); }
   })();
 
-  /* ------------------------------------------------------------------------
-     PRODUCT section (content from config.js → PRODUCT)
-     ------------------------------------------------------------------------ */
+  
   (() => {
     if (!PRODUCT) return;
     const sec = $("#product");
@@ -858,9 +822,7 @@
     sec.hidden = false;
   })();
 
-  /* ------------------------------------------------------------------------
-     Desktop: draggable windows
-     ------------------------------------------------------------------------ */
+  
   function desktop() {
     const desk = $("#desk");
     const wins = $$(".dwin", desk);
@@ -875,7 +837,7 @@
     wins.forEach((w) => {
       const bar = $(".dwin__bar", w);
       w.addEventListener("pointerdown", () => focus(w), true);
-      // controls
+      
       const ctl = $$(".win__ctl b", w);
       if (ctl[0] && ctl.length === 3) ctl[0].addEventListener("click", (e) => { e.stopPropagation(); w.classList.toggle("is-min"); });
       if (ctl[2] && ctl.length === 3) ctl[2].addEventListener("click", (e) => {
@@ -885,7 +847,7 @@
       });
       if (ctl.length === 3) ctl[1].addEventListener("click", (e) => { e.stopPropagation(); toast("MAXIMIZE DISABLED BY MARKET REGULATOR"); });
 
-      // dragging
+      
       let sx, sy, ox, oy, dragging = false;
       bar.addEventListener("pointerdown", (e) => {
         if (isMobile() || e.target.closest(".win__ctl")) return;
@@ -912,7 +874,7 @@
     });
     focus($('[data-win="market"]'));
 
-    // desktop tickers table
+    
     const tb = $("#deskTickers tbody");
     const rowsData = MARKETS.filter((m) => ["WSEX", "NVDA", "TSLA", "GME", "BTC", "ETH", "SOL"].includes(m.sym));
     tb.innerHTML = rowsData.map((m) => `<tr data-sym="${m.sym}"><td>${m.sym}</td><td>${fmtPrice(m.price)}</td><td class="tk__pct ${m.chg >= 0 ? "up" : "down"}">${fmtPct(m.chg)}</td></tr>`).join("");
@@ -925,14 +887,14 @@
     setInterval(() => {
       const tr = pick($$("tr", tb));
       const m = rowsData.find((x) => x.sym === tr.dataset.sym);
-      if (m.real) return; // real feed owns this row
+      if (m.real) return; 
       const d = rand(-0.4, 0.5);
       m.chg += d; m.price *= 1 + d / 100;
       paintRow(tr, m, d);
     }, 1100);
     document.addEventListener("wsex:price", () => { const tr = $('tr[data-sym="WSEX"]', tb); if (tr) paintRow(tr, MARKETS[0], MARKETS[0].chg); });
 
-    // warning popup: occasional, dismissable
+    
     const warn = $("#warnWin");
     const showWarn = () => {
       if (isMobile() || !warn) return;
@@ -942,7 +904,7 @@
     setTimeout(showWarn, 14000);
     setInterval(() => { if (Math.random() < 0.35) showWarn(); }, 60000);
 
-    // news feed
+    
     const news = [
       "$WSEX up. Nobody knows why. Everyone pretends to.",
       "Terminal user reports seeing 'SYSTEM ONLINE' in dreams.",
@@ -963,9 +925,7 @@
   }
   desktop();
 
-  /* ------------------------------------------------------------------------
-     Interactive terminal
-     ------------------------------------------------------------------------ */
+  
   function terminal() {
     const out = $("#termOut"), input = $("#termInput"), body = $("#termBody");
     const print = (s, cls) => {
@@ -1020,9 +980,7 @@
   }
   terminal();
 
-  /* ------------------------------------------------------------------------
-     Big terminal table
-     ------------------------------------------------------------------------ */
+  
   function bigTable() {
     const tb = $("#bigTable tbody");
     const fmtVol = (v) => v === 0 ? "—" : v >= 1e9 ? (v / 1e9).toFixed(1) + "B" : v >= 1e6 ? (v / 1e6).toFixed(1) + "M" : v.toLocaleString();
@@ -1049,7 +1007,7 @@
     render();
     setInterval(() => {
       const m = pick(MARKETS);
-      if (m.real) return; // real feed owns this row
+      if (m.real) return; 
       const d = rand(-0.3, 0.35);
       m.chg += d; m.price *= 1 + d / 100; if (m.vol) m.vol *= 1 + rand(0, 0.004);
       paintRow(m, d);
@@ -1069,9 +1027,7 @@
   }
   bigTable();
 
-  /* ------------------------------------------------------------------------
-     Market chaos: signals + panic log
-     ------------------------------------------------------------------------ */
+  
   function chaos() {
     const sig = { buy: 68, sell: 22, hold: 41, panic: 87 };
     const paint = () => {
@@ -1090,7 +1046,7 @@
     const levels = ["EXTREME", "EXTREME", "EXTREME", "CRITICAL", "UNHINGED", "EXTREME"];
     setInterval(() => { $("#volLevel").textContent = pick(levels); }, 5000);
 
-    // panic log
+    
     const log = $("#chaosLog");
     const events = [
       "MARKET CONNECTION ESTABLISHED", "NVDA PRICE UPDATE", "BUY ORDER DETECTED", "VOLATILITY SPIKE",
@@ -1115,9 +1071,7 @@
   }
   chaos();
 
-  /* ------------------------------------------------------------------------
-     Desktop particles canvas
-     ------------------------------------------------------------------------ */
+  
   function deskParticles() {
     const cv = $("#deskCanvas");
     const ctx = cv.getContext("2d");
@@ -1148,9 +1102,7 @@
   }
   deskParticles();
 
-  /* ------------------------------------------------------------------------
-     Glitch (rare, controlled)
-     ------------------------------------------------------------------------ */
+  
   const title = $(".hero__title");
   const variants = ["WALLSTREET.EXE", "WALLSTREET.EXE_", "WALLSTREET.EXE//ERROR"];
   function glitchNow() {
@@ -1165,9 +1117,7 @@
   if (!reduced) setInterval(() => { if (Math.random() < 0.3) glitchNow(); }, 7000);
   title.addEventListener("mouseenter", glitchNow);
 
-  /* ------------------------------------------------------------------------
-     Copy buttons + toast + reveal
-     ------------------------------------------------------------------------ */
+  
   let toastT;
   function toast(msg) {
     const t = $("#toast");
@@ -1175,7 +1125,7 @@
     clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("is-on"), 2200);
   }
   $$(".copy").forEach((b) => b.addEventListener("click", async () => {
-    try { await navigator.clipboard.writeText(b.dataset.copy); } catch (_) { /* clipboard unavailable */ }
+    try { await navigator.clipboard.writeText(b.dataset.copy); } catch (_) {  }
     b.classList.add("is-copied"); b.textContent = "COPIED";
     toast("COPIED TO CLIPBOARD");
     setTimeout(() => { b.classList.remove("is-copied"); b.textContent = "COPY"; }, 1400);
@@ -1185,14 +1135,14 @@
     $("#chartBtn").addEventListener("click", (e) => { e.preventDefault(); toast("CHART LINK: TBA. THE LINE GOES SOMEWHERE."); });
   }
 
-  // reveal on scroll
+  
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } }), { threshold: 0.12 });
   $$(".section > .win, .section__head, .signal, .about__grid, .product__grid, .utility, .chaos__warn, .chaos__bottom > *").forEach((el) => { el.classList.add("reveal"); io.observe(el); });
 
-  // Menu items in app: playful
+  
   $$(".app__menu span").forEach((m) => m.addEventListener("click", () => toast(`${m.textContent}: MENU UNAVAILABLE DURING VOLATILITY`)));
 
-  // console easter egg
+  
   console.log("%cWALLSTREET.EXE", "font: bold 28px Inter, sans-serif; color:#3dff7a");
   console.log("%cSYSTEM STATUS: STILL RUNNING.\nType HELP in the terminal.", "color:#8a939c; font-family: monospace");
 })();

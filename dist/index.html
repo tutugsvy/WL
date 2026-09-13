@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WALLSTREET.EXE — $WSEX</title>
+  <meta name="description" content="WALLSTREET.EXE is a corrupted Wall Street terminal running somewhere between finance, internet culture and chaos. Ticker: $WSEX." />
+  <meta name="theme-color" content="#07080a" />
+  <meta property="og:title" content="WALLSTREET.EXE — $WSEX" />
+  <meta property="og:description" content="The market was never meant to run this way." />
+  <meta property="og:image" content="/assets/pfp-1024-jY-QjHO9.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-CUSkbdUN.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64-C5INePAA.png" />
+  <link rel="apple-touch-icon" href="/assets/token-512-BG6mSPqH.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" crossorigin href="/assets/index-BAaQGmpV.css">
+</head>
+<body>
+
+  
+  <div class="boot" id="boot" aria-hidden="true">
+    <div class="boot__inner">
+      <pre class="boot__bios">WALLSTREET BIOS v1.0.98  (C) 1998-2026
+CPU: MARKET CORE 486DX @ 66MHz
+MEMORY TEST: 640K OK
+DETECTING SECURITIES........ OK
+DETECTING VOLATILITY........ EXTREME
+</pre>
+      <div class="boot__logo">
+        <img src="/assets/logo-6Jql4N9_.png" alt="" width="56" height="56" />
+        <span>WALLSTREET.EXE</span>
+      </div>
+      <div class="boot__bar"><i id="bootBar"></i></div>
+      <div class="boot__status" id="bootStatus">LOADING SYSTEM...</div>
+      <button class="boot__skip" id="bootSkip">[ PRESS ANY KEY TO SKIP ]</button>
+    </div>
+  </div>
+
+  
+  <div class="fx-scanlines" aria-hidden="true"></div>
+  <div class="fx-noise" aria-hidden="true"></div>
+  <div class="fx-vignette" aria-hidden="true"></div>
+
+  
+  <header class="taskbar" id="top">
+    <a class="taskbar__start" href="#top">
+      <img src="/assets/logo-6Jql4N9_.png" alt="WALLSTREET.EXE" width="20" height="20" />
+      <span>WALLSTREET.EXE</span>
+    </a>
+    <nav class="taskbar__nav">
+      <a href="#terminal">TERMINAL</a>
+      <a href="#desktop">DESKTOP</a>
+      <a href="#chaos">CHAOS</a>
+      <a href="#about">ABOUT</a>
+      <a href="#product">PRODUCT</a>
+      <a href="#token">$WSEX</a>
+    </nav>
+    <div class="taskbar__right">
+      <span class="taskbar__status"><i class="dot dot--green"></i> MARKET: ACTIVE</span>
+      <button class="wallet-btn" id="walletBtn" type="button" title="Connect wallet"><i class="dot"></i><span id="walletBtnText">CONNECT WALLET</span></button>
+      <span class="taskbar__clock" id="clock">00:00:00</span>
+    </div>
+  </header>
+
+  
+  <section class="hero" id="hero">
+    <div class="hero__layers" aria-hidden="true">
+      <div class="layer layer--grid"></div>
+      <div class="layer layer--skyline"></div>
+      <div class="layer layer--room"></div>
+      <div class="layer layer--haze"></div>
+      <canvas class="layer layer--data" id="heroCanvas"></canvas>
+      <div class="layer layer--glow"></div>
+    </div>
+
+    <div class="hero__content">
+      <div class="win win--terminal hero__term" id="heroTerm">
+        <div class="win__bar">
+          <span class="win__title"><i class="ico ico--term"></i> C:\WALLSTREET\BOOT.LOG</span>
+          <span class="win__ctl"><b>-</b><b>□</b><b>x</b></span>
+        </div>
+        <pre class="win__body hero__termbody" id="heroTermBody"></pre>
+      </div>
+
+      <p class="hero__sys"><span class="blink">█</span> SYSTEM ONLINE</p>
+      <h1 class="hero__title glitch" data-text="WALLSTREET.EXE">WALLSTREET.EXE</h1>
+      <p class="hero__tag">THE MARKET WAS NEVER<br />MEANT TO RUN THIS WAY.</p>
+      <p class="hero__sub">A corrupted Wall Street terminal running somewhere between finance, internet culture and chaos.</p>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#desktop">[ LAUNCH TERMINAL ]</a>
+        <a class="btn btn--ghost" href="#token">[ VIEW CONTRACT ]</a>
+      </div>
+
+      <p class="hero__status"><i class="dot dot--green pulse"></i> MARKET CONNECTION: ACTIVE</p>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true">SCROLL TO ENTER <span>▼</span></div>
+  </section>
+
+  
+  <div class="tape" aria-hidden="true">
+    <div class="tape__track" id="tape"></div>
+  </div>
+
+  
+  <section class="section section--app" id="terminal">
+    <div class="app win">
+      <div class="win__bar win__bar--app">
+        <span class="win__title"><img src="/assets/logo-6Jql4N9_.png" alt="" width="14" height="14" /> WALLSTREET.EXE v1.0</span>
+        <span class="win__ctl"><b>-</b><b>□</b><b>x</b></span>
+      </div>
+      <div class="app__menu">
+        <span>FILE</span><span>MARKET</span><span>TERMINAL</span><span>PORTFOLIO</span><span>HELP</span>
+      </div>
+
+      <div class="app__grid">
+        <div class="panel panel--status">
+          <div class="panel__head">MARKET STATUS</div>
+          <div class="panel__body">
+            <div class="status-big"><i class="dot dot--green pulse"></i> OPEN</div>
+            <div class="kv"><span>SESSION</span><b>NYSE / REGULAR</b></div>
+            <div class="kv"><span>LATENCY</span><b id="latency">12ms</b></div>
+            <div class="kv"><span>FEED</span><b class="c-green">SYNCED</b></div>
+            <div class="kv"><span>UPTIME</span><b id="uptime">00:00:00</b></div>
+          </div>
+        </div>
+
+        <div class="panel panel--tickers">
+          <div class="panel__head">LIVE TICKERS</div>
+          <div class="panel__body">
+            <table class="tk" id="liveTickers">
+              <tbody>
+                <tr data-sym="NVDA" data-base="4.82"><td>NVDA</td><td class="tk__pct">+4.82%</td></tr>
+                <tr data-sym="AAPL" data-base="-1.24"><td>AAPL</td><td class="tk__pct">-1.24%</td></tr>
+                <tr data-sym="TSLA" data-base="2.91"><td>TSLA</td><td class="tk__pct">+2.91%</td></tr>
+                <tr data-sym="MSFT" data-base="1.42"><td>MSFT</td><td class="tk__pct">+1.42%</td></tr>
+                <tr data-sym="BTC" data-base="3.42"><td>BTC</td><td class="tk__pct">+3.42%</td></tr>
+                <tr data-sym="ETH" data-base="2.17"><td>ETH</td><td class="tk__pct">+2.17%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel panel--chart">
+          <div class="panel__head">
+            <span>MARKET CHART — $WSEX / USD <span class="badge" id="chartSrc" title="Data source">SIMULATED</span></span>
+            <span class="panel__meta"><b id="chartPrice" class="c-green">0.0000</b> <span id="chartChg" class="c-green">+0.00%</span></span>
+          </div>
+          <div class="panel__body panel__body--chart">
+            <canvas id="mainChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel panel--log">
+          <div class="panel__head">SYSTEM LOG</div>
+          <div class="panel__body">
+            <ul class="syslog" id="sysLog">
+              <li><span>&gt;</span> MARKET DATA RECEIVED</li>
+              <li><span>&gt;</span> VOLATILITY INCREASING</li>
+              <li><span>&gt;</span> BUY ORDERS DETECTED</li>
+              <li><span>&gt;</span> WALLSTREET.EXE RUNNING</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel panel--portfolio" id="pfPanel">
+          <div class="panel__head"><span>PORTFOLIO</span><span class="badge" id="pfMode">SIMULATED</span></div>
+          <div class="panel__body">
+            <div class="pf">
+              <span class="pf__label">TOTAL VALUE</span>
+              <span class="pf__value" id="pfValue">$124,921.42</span>
+            </div>
+            <div class="pf">
+              <span class="pf__label">24H CHANGE</span>
+              <span class="pf__value c-green" id="pfChange">+8.42%</span>
+            </div>
+            <div class="pf__bars" id="pfBars" aria-hidden="true">
+              <i style="--h:40%"></i><i style="--h:55%"></i><i style="--h:35%"></i><i style="--h:70%"></i><i style="--h:60%"></i><i style="--h:85%"></i><i style="--h:75%"></i><i style="--h:95%"></i>
+            </div>
+            <div class="pf__holdings" id="pfHoldings" hidden></div>
+            <div class="pf__foot">
+              <button class="btn btn--sm btn--primary pf__connect" id="pfConnect" type="button">[ CONNECT WALLET ]</button>
+              <span class="pf__addr" id="pfAddr" hidden></span>
+              <button class="btn btn--sm btn--ghost" id="pfAddChain" type="button" hidden title="Add Robinhood Chain to wallet">+ NETWORK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app__statusbar">
+        <span>READY</span>
+        <span id="appTime">--:--:--</span>
+        <span>NYSE</span>
+        <span class="c-green">● CONNECTED</span>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section section--desktop" id="desktop">
+    <div class="section__head">
+      <p class="eyebrow">// USER SESSION: <span id="sessionUser">GUEST</span></p>
+      <h2 class="h2">YOU ARE NOW INSIDE <span class="c-green">WALLSTREET.EXE</span></h2>
+      <p class="lede">Drag the windows. Type in the terminal. Nothing here is regulated.</p>
+    </div>
+
+    <div class="desk" id="desk">
+      <div class="desk__bg" aria-hidden="true">
+        <div class="desk__grid"></div>
+        <div class="desk__skyline"></div>
+        <canvas class="desk__particles" id="deskCanvas"></canvas>
+        <div class="desk__tape" id="deskTape"></div>
+      </div>
+
+      <div class="desk__icons" aria-hidden="true">
+        <div class="dicon"><img src="/assets/logo-6Jql4N9_.png" alt="" /><span>WALLSTREET.EXE</span></div>
+        <div class="dicon"><i class="ico ico--folder"></i><span>PORTFOLIO</span></div>
+        <div class="dicon"><i class="ico ico--term"></i><span>TERMINAL</span></div>
+        <div class="dicon"><i class="ico ico--warn"></i><span>PANIC.LOG</span></div>
+        <div class="dicon"><i class="ico ico--trash"></i><span>LOSSES</span></div>
+      </div>
+
+      
+      <div class="win dwin" data-win="market" style="--x:9%;--y:5%;--w:42%;">
+        <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--chart"></i> MARKET WATCH</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+        <div class="win__body">
+          <table class="tk tk--wide" id="deskTickers">
+            <thead><tr><th>SYM</th><th>PRICE</th><th>24H</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <canvas class="mini-chart" id="deskChart"></canvas>
+        </div>
+      </div>
+
+      
+      <div class="win dwin dwin--term" data-win="terminal" style="--x:40%;--y:36%;--w:46%;">
+        <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--term"></i> TERMINAL — C:\WALLSTREET&gt;</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+        <div class="win__body term" id="termBody">
+          <pre class="term__out" id="termOut">WALLSTREET.EXE [Version 1.0.1998]
+(c) Wall Street Corporation. All rights corrupted.
+
+Type HELP for a list of commands.
+</pre>
+          <div class="term__line"><span class="term__prompt">C:\WALLSTREET&gt;</span><input class="term__input" id="termInput" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal input" /></div>
+        </div>
+      </div>
+
+      
+      <div class="win dwin" data-win="portfolio" style="--x:56%;--y:4%;--w:34%;">
+        <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--folder"></i> PORTFOLIO</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+        <div class="win__body">
+          <div class="kv"><span>TOTAL VALUE</span><b id="deskPf">$124,921.42</b></div>
+          <div class="kv"><span>24H CHANGE</span><b class="c-green" id="deskPfChg">+8.42%</b></div>
+          <div class="kv"><span>$WSEX HELD</span><b id="deskPfHeld">4,200,000</b></div>
+          <div class="kv"><span id="deskPfRow4K">AVG ENTRY</span><b id="deskPfRow4V">$0.0123</b></div>
+          <div class="kv"><span>ACCESS LEVEL</span><b class="c-gray" id="deskPfAccess">GUEST</b></div>
+          <div class="kv"><span>RISK LEVEL</span><b class="c-red">MAXIMUM</b></div>
+          <div class="kv"><span>SLEEP</span><b class="c-gray">NONE</b></div>
+        </div>
+      </div>
+
+      
+      <div class="win dwin" data-win="news" style="--x:9%;--y:58%;--w:32%;">
+        <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--news"></i> WALL STREET NEWS</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+        <div class="win__body news" id="newsBody">
+          <p><time>09:41</time> Terminal reportedly "still running" despite everything.</p>
+          <p><time>09:38</time> Analysts confused. Market confused. Everyone confused.</p>
+          <p><time>09:33</time> Volatility hits EXTREME. Users hit refresh.</p>
+          <p><time>09:29</time> Executable file allegedly becomes financial system.</p>
+        </div>
+      </div>
+
+      
+      <div class="win dwin dwin--sys" data-win="system" style="--x:70%;--y:60%;--w:27%;">
+        <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--sys"></i> NETWORK STATUS</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+        <div class="win__body">
+          <div class="meter"><span>CPU</span><div class="meter__bar"><i id="mCpu" style="width:42%"></i></div><b id="mCpuV">42%</b></div>
+          <div class="meter"><span>MEM</span><div class="meter__bar"><i id="mMem" style="width:63%"></i></div><b id="mMemV">63%</b></div>
+          <div class="meter"><span>NET</span><div class="meter__bar"><i id="mNet" style="width:88%"></i></div><b id="mNetV">88%</b></div>
+          <div class="meter"><span>HOPE</span><div class="meter__bar"><i class="is-red" style="width:12%"></i></div><b>12%</b></div>
+          <div class="kv kv--sm"><span>NODE</span><b>NYC-01</b></div>
+          <div class="kv kv--sm"><span>PING</span><b id="mPing">14ms</b></div>
+        </div>
+      </div>
+
+      
+      <div class="win dwin dwin--warn" id="warnWin" data-win="warn" style="--x:30%;--y:22%;--w:32%;" hidden>
+        <div class="win__bar dwin__bar dwin__bar--red"><span class="win__title"><i class="ico ico--warn"></i> SYSTEM WARNING</span><span class="win__ctl"><b class="warn-close">x</b></span></div>
+        <div class="win__body warn">
+          <div class="warn__icon">!</div>
+          <div>
+            <b>MARKET VOLATILITY DETECTED</b>
+            <p>WALLSTREET.EXE has encountered extreme conditions and will continue running anyway.</p>
+            <div class="warn__btns"><button class="btn btn--sm warn-close">OK</button><button class="btn btn--sm btn--ghost warn-close">PANIC</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="desk__taskbar" aria-hidden="true">
+        <span class="desk__start"><img src="/assets/logo-6Jql4N9_.png" alt="" width="14" height="14" /> START</span>
+        <span class="desk__task is-active">MARKET WATCH</span>
+        <span class="desk__task">TERMINAL</span>
+        <span class="desk__task">PORTFOLIO</span>
+        <span class="desk__task">NEWS</span>
+        <span class="desk__task">NETWORK</span>
+        <span class="desk__tray"><i class="dot dot--green"></i> <span id="deskClock">00:00</span></span>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section section--bigterm" id="markets">
+    <div class="section__head">
+      <p class="eyebrow">// MODULE 02</p>
+      <h2 class="h2">THE TERMINAL</h2>
+      <p class="lede">"Your window into the market."</p>
+    </div>
+
+    <div class="win bigterm">
+      <div class="win__bar"><span class="win__title"><i class="ico ico--chart"></i> SECURITIES OVERVIEW — REALTIME FEED</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+      <div class="bigterm__toolbar">
+        <span class="chip chip--on">ALL</span><span class="chip">EQUITIES</span><span class="chip">CRYPTO</span><span class="chip">INDICES</span>
+        <span class="bigterm__spacer"></span>
+        <span class="c-gray">REFRESH: <b class="c-green">1.0s</b></span>
+      </div>
+      <div class="bigterm__scroll">
+        <table class="grid" id="bigTable">
+          <thead>
+            <tr><th>MARKET</th><th>PRICE</th><th>24H</th><th>VOLUME</th><th>STATUS</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="app__statusbar">
+        <span>ROWS: <b id="rowCount">0</b></span>
+        <span>FEED: NYSE / NASDAQ / CHAIN</span>
+        <span class="c-green">● LIVE</span>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section section--chaos" id="chaos">
+    <div class="chaos__bg" aria-hidden="true"></div>
+    <div class="section__head">
+      <p class="eyebrow c-red">// WARNING</p>
+      <h2 class="h2 glitch glitch--soft" data-text="MARKET CHAOS">MARKET CHAOS</h2>
+    </div>
+
+    <div class="chaos__warn win">
+      <div class="win__bar win__bar--red"><span class="win__title"><i class="ico ico--warn"></i> SYSTEM WARNING</span><span class="win__ctl"><b>x</b></span></div>
+      <div class="win__body chaos__warnbody">
+        <span class="chaos__label">VOLATILITY LEVEL:</span>
+        <span class="chaos__level" id="volLevel">EXTREME</span>
+        <div class="chaos__volbar"><i id="volBar"></i></div>
+      </div>
+    </div>
+
+    <div class="chaos__grid">
+      <div class="signal signal--buy">
+        <span class="signal__name">BUY</span>
+        <div class="signal__meter"><i></i></div>
+        <span class="signal__val" data-signal="buy">0%</span>
+      </div>
+      <div class="signal signal--sell">
+        <span class="signal__name">SELL</span>
+        <div class="signal__meter"><i></i></div>
+        <span class="signal__val" data-signal="sell">0%</span>
+      </div>
+      <div class="signal signal--hold">
+        <span class="signal__name">HOLD</span>
+        <div class="signal__meter"><i></i></div>
+        <span class="signal__val" data-signal="hold">0%</span>
+      </div>
+      <div class="signal signal--panic">
+        <span class="signal__name">PANIC</span>
+        <div class="signal__meter"><i></i></div>
+        <span class="signal__val" data-signal="panic">0%</span>
+      </div>
+    </div>
+
+    <div class="chaos__bottom">
+      <img class="chaos__bullbear" src="/assets/bull-bear-DheLOK-K.png" alt="Bull and bear silhouettes" loading="lazy" />
+      <div class="win chaos__log">
+        <div class="win__bar"><span class="win__title"><i class="ico ico--term"></i> PANIC.LOG</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+        <pre class="win__body chaos__logbody" id="chaosLog"></pre>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section section--about" id="about">
+    <div class="about__grid">
+      <div class="about__text">
+        <p class="eyebrow">// README.TXT</p>
+        <h2 class="h2">WHAT IS WALLSTREET.EXE?</h2>
+        <p class="about__p">WALLSTREET.EXE is a fictional financial operating system built for the internet.</p>
+        <p class="about__p">It mixes Wall Street terminals, retro computing, market culture and internet chaos into one executable experience.</p>
+        <div class="about__facts">
+          <div class="fact"><span>FORMAT</span><b>.EXE</b></div>
+          <div class="fact"><span>YEAR</span><b>1998 → 2026</b></div>
+          <div class="fact"><span>STATUS</span><b class="c-green">RUNNING</b></div>
+          <div class="fact"><span>REGULATED</span><b class="c-red">NO</b></div>
+        </div>
+      </div>
+      <div class="about__visual">
+        <img src="/assets/crt-terminal-C-YSqtWY.png" alt="Retro CRT trading terminal" loading="lazy" />
+        <img class="about__popup" src="/assets/warning-popup-nUZemO4b.png" alt="" loading="lazy" aria-hidden="true" />
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section section--product" id="product" hidden>
+    <div class="section__head">
+      <p class="eyebrow" id="prodEyebrow">// PRODUCT.SYS</p>
+      <h2 class="h2" id="prodHeadline">THE TERMINAL IS THE PRODUCT.</h2>
+    </div>
+    <div class="product__grid">
+      <div class="product__pitch" id="prodPitch"></div>
+      <div class="win product__win">
+        <div class="win__bar"><span class="win__title"><i class="ico ico--sys"></i> PRODUCT.SYS — MODULES</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+        <ul class="modules" id="prodFeatures"></ul>
+        <div class="app__statusbar">
+          <span>MODULES: <b id="prodCount">0</b></span>
+          <span id="prodLive" class="c-green">● LIVE: 0</span>
+        </div>
+      </div>
+    </div>
+    <div class="utility" id="prodUtility"></div>
+  </section>
+
+  
+  <section class="section section--token" id="token">
+    <div class="win token">
+      <div class="win__bar"><span class="win__title"><img src="/assets/logo-6Jql4N9_.png" alt="" width="14" height="14" /> TOKEN.INF — PROPERTIES</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
+      <div class="token__body">
+        <div class="token__brand">
+          <img src="/assets/logo-6Jql4N9_.png" alt="WALLSTREET.EXE logo" width="96" height="96" />
+          <div>
+            <div class="token__name">WALLSTREET.EXE</div>
+            <div class="token__ticker">$WSEX</div>
+          </div>
+        </div>
+        <div class="token__rows">
+          <div class="trow">
+            <span class="trow__k">CONTRACT</span>
+            <code class="trow__v" id="contractAddr">0x0000000000000000000000000000000000000000</code>
+            <button class="btn btn--sm copy" id="contractCopy" data-copy="0x0000000000000000000000000000000000000000">COPY</button>
+          </div>
+          <div class="trow trow--market" id="tokMarket" hidden>
+            <span class="trow__k">MARKET <span class="badge" id="tokSrc">LIVE</span></span>
+            <div class="trow__v trow__market">
+              <span>PRICE <b id="tokPrice">—</b></span>
+              <span>24H <b id="tokChg">—</b></span>
+              <span>VOL 24H <b id="tokVol">—</b></span>
+              <span>FDV <b id="tokFdv">—</b></span>
+              <span>LIQ <b id="tokLiq">—</b></span>
+            </div>
+            <span></span>
+          </div>
+          <div class="trow">
+            <span class="trow__k">TICKER</span>
+            <code class="trow__v">$WSEX</code>
+            <button class="btn btn--sm copy" data-copy="$WSEX">COPY</button>
+          </div>
+          <div class="trow">
+            <span class="trow__k">TOTAL SUPPLY</span>
+            <code class="trow__v">1,000,000,000</code>
+            <button class="btn btn--sm copy" data-copy="1000000000">COPY</button>
+          </div>
+          <div class="trow">
+            <span class="trow__k">NETWORK</span>
+            <code class="trow__v" id="tokNetwork">ROBINHOOD CHAIN (ID 4663)</code>
+            <button class="btn btn--sm" id="tokAddChain" type="button" title="Add Robinhood Chain to your wallet">ADD</button>
+          </div>
+          <div class="trow">
+            <span class="trow__k">LAUNCHPAD</span>
+            <code class="trow__v">PONS FAMILY → UNISWAP V4 (LOCKED LP)</code>
+            <span></span>
+          </div>
+        </div>
+        <div class="token__actions">
+          <a class="btn btn--primary" href="#" id="buyBtn" target="_blank" rel="noopener">[ BUY $WSEX ]</a>
+          <a class="btn btn--ghost" href="#" id="chartBtn" target="_blank" rel="noopener">[ VIEW CHART ]</a>
+          <a class="btn btn--ghost" href="#" id="explorerBtn" target="_blank" rel="noopener" hidden>[ EXPLORER ]</a>
+        </div>
+      </div>
+      <div class="app__statusbar">
+        <span>FILE SIZE: 1,000,000,000 BYTES</span>
+        <span>TYPE: APPLICATION</span>
+        <span class="c-green">● VERIFIED</span>
+      </div>
+    </div>
+  </section>
+
+  
+  <footer class="footer">
+    <div class="footer__shutdown">
+      <img src="/assets/logo-6Jql4N9_.png" alt="" width="40" height="40" />
+      <div class="footer__brand">WALLSTREET.EXE</div>
+      <div class="footer__status">SYSTEM STATUS:<br /><b class="c-green">STILL RUNNING.</b></div>
+      <p class="footer__hint">It is now safe to turn off your computer.<br />You won't.</p>
+      <div class="footer__social">
+        <a href="#" id="linkX" aria-label="X (Twitter)" title="X" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L22.8 22h-6.9l-5.4-7.06L4.3 22H1.04l8.02-9.17L.5 2h7.07l4.88 6.45L18.24 2Zm-1.2 18h1.8L7.1 3.9H5.17L17.04 20Z"/></svg>
+        </a>
+        <a href="#" id="linkTg" aria-label="Telegram" title="Telegram" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21.95 3.3 18.6 20.2c-.25 1.1-.9 1.4-1.85.87l-5.1-3.76-2.46 2.37c-.27.27-.5.5-1.03.5l.37-5.2 9.46-8.55c.41-.37-.09-.57-.64-.2L5.66 13.6l-5.03-1.57c-1.1-.34-1.12-1.1.23-1.62L20.5 2.62c.91-.34 1.7.2 1.45.68Z"/></svg>
+        </a>
+      </div>
+      <p class="footer__copy">© 2026 WALLSTREET.EXE</p>
+      <p class="footer__legal">Fictional software. Not financial advice. Not a regulated financial product. Nothing here is real except the volatility.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  
+  <div class="modal" id="walletModal" hidden>
+    <div class="win modal__win" role="dialog" aria-modal="true" aria-labelledby="walletModalTitle">
+      <div class="win__bar"><span class="win__title" id="walletModalTitle"><i class="ico ico--sys"></i> CONNECT WALLET</span><span class="win__ctl"><b class="modal-close">x</b></span></div>
+      <div class="win__body modal__body">
+        <p class="modal__hint">SELECT A WALLET. READS ONLY — NO TRANSACTION IS SIGNED.</p>
+        <div class="wallet-list" id="walletList"></div>
+        <p class="modal__none" id="walletNone" hidden>NO WALLET DETECTED.<br />Install <a href="https://robinhood.com/us/en/about/crypto/wallet/" target="_blank" rel="noopener">Robinhood Wallet</a>, <a href="https://metamask.io" target="_blank" rel="noopener">MetaMask</a> or <a href="https://rabby.io" target="_blank" rel="noopener">Rabby</a>, then reload.</p>
+        <div class="warn__btns"><button class="btn btn--sm btn--ghost modal-close" type="button">CANCEL</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

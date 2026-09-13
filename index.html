@@ -21,7 +21,7 @@
 </head>
 <body>
 
-  <!-- ============ BOOT SCREEN ============ -->
+  
   <div class="boot" id="boot" aria-hidden="true">
     <div class="boot__inner">
       <pre class="boot__bios">WALLSTREET BIOS v1.0.98  (C) 1998-2026
@@ -40,12 +40,12 @@ DETECTING VOLATILITY........ EXTREME
     </div>
   </div>
 
-  <!-- ============ GLOBAL OVERLAYS ============ -->
+  
   <div class="fx-scanlines" aria-hidden="true"></div>
   <div class="fx-noise" aria-hidden="true"></div>
   <div class="fx-vignette" aria-hidden="true"></div>
 
-  <!-- ============ TASKBAR / NAV ============ -->
+  
   <header class="taskbar" id="top">
     <a class="taskbar__start" href="#top">
       <img src="assets/logo.png" alt="WALLSTREET.EXE" width="20" height="20" />
@@ -66,7 +66,7 @@ DETECTING VOLATILITY........ EXTREME
     </div>
   </header>
 
-  <!-- ============ HERO ============ -->
+  
   <section class="hero" id="hero">
     <div class="hero__layers" aria-hidden="true">
       <div class="layer layer--grid"></div>
@@ -102,12 +102,12 @@ DETECTING VOLATILITY........ EXTREME
     <div class="hero__scroll" aria-hidden="true">SCROLL TO ENTER <span>▼</span></div>
   </section>
 
-  <!-- ============ TICKER TAPE ============ -->
+  
   <div class="tape" aria-hidden="true">
     <div class="tape__track" id="tape"></div>
   </div>
 
-  <!-- ============ MAIN APP WINDOW ============ -->
+  
   <section class="section section--app" id="terminal">
     <div class="app win">
       <div class="win__bar win__bar--app">
@@ -201,7 +201,7 @@ DETECTING VOLATILITY........ EXTREME
     </div>
   </section>
 
-  <!-- ============ DESKTOP ============ -->
+  
   <section class="section section--desktop" id="desktop">
     <div class="section__head">
       <p class="eyebrow">// USER SESSION: <span id="sessionUser">GUEST</span></p>
@@ -225,7 +225,7 @@ DETECTING VOLATILITY........ EXTREME
         <div class="dicon"><i class="ico ico--trash"></i><span>LOSSES</span></div>
       </div>
 
-      <!-- MARKET -->
+      
       <div class="win dwin" data-win="market" style="--x:9%;--y:5%;--w:42%;">
         <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--chart"></i> MARKET WATCH</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
         <div class="win__body">
@@ -237,7 +237,7 @@ DETECTING VOLATILITY........ EXTREME
         </div>
       </div>
 
-      <!-- TERMINAL -->
+      
       <div class="win dwin dwin--term" data-win="terminal" style="--x:40%;--y:36%;--w:46%;">
         <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--term"></i> TERMINAL — C:\WALLSTREET&gt;</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
         <div class="win__body term" id="termBody">
@@ -250,7 +250,7 @@ Type HELP for a list of commands.
         </div>
       </div>
 
-      <!-- PORTFOLIO -->
+      
       <div class="win dwin" data-win="portfolio" style="--x:56%;--y:4%;--w:34%;">
         <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--folder"></i> PORTFOLIO</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
         <div class="win__body">
@@ -264,7 +264,7 @@ Type HELP for a list of commands.
         </div>
       </div>
 
-      <!-- NEWS -->
+      
       <div class="win dwin" data-win="news" style="--x:9%;--y:58%;--w:32%;">
         <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--news"></i> WALL STREET NEWS</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
         <div class="win__body news" id="newsBody">
@@ -275,7 +275,7 @@ Type HELP for a list of commands.
         </div>
       </div>
 
-      <!-- SYSTEM -->
+      
       <div class="win dwin dwin--sys" data-win="system" style="--x:70%;--y:60%;--w:27%;">
         <div class="win__bar dwin__bar"><span class="win__title"><i class="ico ico--sys"></i> NETWORK STATUS</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
         <div class="win__body">
@@ -288,7 +288,7 @@ Type HELP for a list of commands.
         </div>
       </div>
 
-      <!-- Occasional warning popup -->
+      
       <div class="win dwin dwin--warn" id="warnWin" data-win="warn" style="--x:30%;--y:22%;--w:32%;" hidden>
         <div class="win__bar dwin__bar dwin__bar--red"><span class="win__title"><i class="ico ico--warn"></i> SYSTEM WARNING</span><span class="win__ctl"><b class="warn-close">x</b></span></div>
         <div class="win__body warn">
@@ -313,7 +313,7 @@ Type HELP for a list of commands.
     </div>
   </section>
 
-  <!-- ============ THE TERMINAL (BIG TABLE) ============ -->
+  
   <section class="section section--bigterm" id="markets">
     <div class="section__head">
       <p class="eyebrow">// MODULE 02</p>
@@ -344,7 +344,7 @@ Type HELP for a list of commands.
     </div>
   </section>
 
-  <!-- ============ MARKET CHAOS ============ -->
+  
   <section class="section section--chaos" id="chaos">
     <div class="chaos__bg" aria-hidden="true"></div>
     <div class="section__head">
@@ -393,7 +393,7 @@ Type HELP for a list of commands.
     </div>
   </section>
 
-  <!-- ============ ABOUT ============ -->
+  
   <section class="section section--about" id="about">
     <div class="about__grid">
       <div class="about__text">
@@ -415,7 +415,7 @@ Type HELP for a list of commands.
     </div>
   </section>
 
-  <!-- ============ PRODUCT (content comes from config.js → PRODUCT) ============ -->
+  
   <section class="section section--product" id="product" hidden>
     <div class="section__head">
       <p class="eyebrow" id="prodEyebrow">// PRODUCT.SYS</p>
@@ -435,7 +435,7 @@ Type HELP for a list of commands.
     <div class="utility" id="prodUtility"></div>
   </section>
 
-  <!-- ============ TOKEN ============ -->
+  
   <section class="section section--token" id="token">
     <div class="win token">
       <div class="win__bar"><span class="win__title"><img src="assets/logo.png" alt="" width="14" height="14" /> TOKEN.INF — PROPERTIES</span><span class="win__ctl"><b>-</b><b>□</b><b>x</b></span></div>
@@ -499,7 +499,7 @@ Type HELP for a list of commands.
     </div>
   </section>
 
-  <!-- ============ FOOTER ============ -->
+  
   <footer class="footer">
     <div class="footer__shutdown">
       <img src="assets/logo.png" alt="" width="40" height="40" />
@@ -521,7 +521,7 @@ Type HELP for a list of commands.
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- Wallet chooser (EIP-6963) -->
+  
   <div class="modal" id="walletModal" hidden>
     <div class="win modal__win" role="dialog" aria-modal="true" aria-labelledby="walletModalTitle">
       <div class="win__bar"><span class="win__title" id="walletModalTitle"><i class="ico ico--sys"></i> CONNECT WALLET</span><span class="win__ctl"><b class="modal-close">x</b></span></div>

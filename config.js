@@ -1,28 +1,6 @@
-/* ==========================================================================
-   WALLSTREET.EXE — config.js
-   ---------------------------------------------------------------------------
-   SATU-SATUNYA FILE YANG PERLU KAMU EDIT SETELAH LAUNCH.
-   (The only file you need to edit after launch.)
-
-   1. TOKEN.address   → ganti 0x000… dengan alamat kontrak $WSEX setelah launch.
-                        Begitu alamat diisi, situs otomatis:
-                        - menarik harga asli, 24h change, volume, FDV, chart OHLCV
-                        - mengaktifkan tombol BUY / VIEW CHART
-                        - menghitung $WSEX HELD saat wallet konek
-   2. PRICE.source    → "geckoterminal" (default, bisa dipanggil langsung dari
-                        browser, sudah mengindeks token Pons sejak bonding curve),
-                        "dexscreener" (hanya setelah graduasi ke Uniswap), atau
-                        "pons" (API ponsfamily.com — TIDAK mengirim header CORS,
-                        jadi butuh PRICE.pons.corsProxy).
-   3. PRODUCT         → teks "kenapa $WSEX punya value": headline, pitch,
-                        fitur + status (LIVE / BUILDING / PLANNED), utility.
-   4. LINKS           → link beli, chart, X, Telegram.
-
-   Placeholder {address} di URL diganti otomatis dengan TOKEN.address.
-   ========================================================================== */
 window.WSEX_CONFIG = {
   TOKEN: {
-    address: "0x0000000000000000000000000000000000000000", // ← ISI SETELAH LAUNCH
+    address: "0x0000000000000000000000000000000000000000", 
     symbol: "WSEX",
     name: "WALLSTREET.EXE",
     decimals: 18,
@@ -36,25 +14,25 @@ window.WSEX_CONFIG = {
     rpc: "https://rpc.mainnet.chain.robinhood.com",
     explorer: "https://robinhoodchain.blockscout.com",
     currency: { name: "Ether", symbol: "ETH", decimals: 18 },
-    // Alamat WETH di Robinhood Chain — dipakai untuk harga ETH/USD.
+    
     weth: "0x0bd7d308f8e1639fab988df18a8011f41eacad73",
-    // Slug jaringan di aggregator.
+    
     geckoTerminalNetwork: "robinhood",
     dexscreenerChain: "robinhood",
   },
 
   PRICE: {
-    source: "geckoterminal", // "geckoterminal" | "dexscreener" | "pons"
-    refreshMs: 30_000,       // GeckoTerminal free tier ≈ 30 req/menit → jangan < 15000
+    source: "geckoterminal", 
+    refreshMs: 30_000,       
     pons: {
       chartUrl: "https://www.ponsfamily.com/api/pons-v2-market/{address}/chart?range=1h",
-      // Contoh proxy: "https://corsproxy.io/?" → URL akhir = corsProxy + encodeURIComponent(chartUrl)
+      
       corsProxy: "",
     },
   },
 
-  // Token lain yang ikut dihitung dalam TOTAL VALUE saat wallet konek
-  // (selain ETH native + $WSEX). Dibaca via RPC balanceOf, harga via GeckoTerminal.
+  
+  
   HOLDINGS: {
     watchlist: [
       { symbol: "USDG", address: "0x5fc5360d0400a0fd4f2af552add042d716f1d168", decimals: 6 },
@@ -66,10 +44,10 @@ window.WSEX_CONFIG = {
       { symbol: "SPY", address: "0x117cc2133c37B721F49dE2A7a74833232B3B4C0C", decimals: 18 },
       { symbol: "AAPL", address: "0xaF3D76f1834A1d425780943C99Ea8A608f8a93f9", decimals: 18 },
     ],
-    // Coba juga ambil SEMUA token ERC-20 wallet dari Blockscout (best-effort;
-    // Blockscout kadang diblokir Cloudflare → otomatis dilewati).
+    
+    
     useBlockscout: true,
-    // TERMINAL PRO: minimal $WSEX yang harus dipegang untuk status PRO.
+    
     proMinHold: 1_000_000,
   },
 
@@ -80,10 +58,7 @@ window.WSEX_CONFIG = {
     telegram: "",
   },
 
-  /* ------------------------------------------------------------------------
-     PRODUCT — "kenapa $WSEX punya value".
-     Edit bebas. status: "LIVE" | "BUILDING" | "PLANNED"
-     ------------------------------------------------------------------------ */
+  
   PRODUCT: {
     eyebrow: "// PRODUCT.SYS",
     headline: "THE TERMINAL IS THE PRODUCT.",
