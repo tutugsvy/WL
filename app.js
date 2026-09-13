@@ -50,20 +50,30 @@ async function refreshRealMarketData() {
   try {
     const assets = CFG.MARKET_DATA?.assets || [];
 
-    if (!assets.length) return;
+    if (!assets.length) {
+      console.warn("MARKET DATA: no assets configured");
+      return;
+    }
 
     const addresses = assets
       .map(a => a.address)
       .filter(isAddr)
       .map(a => a.toLowerCase());
 
-    if (!addresses.length) return;
+    if (!addresses.length) {
+      console.warn("MARKET DATA: no valid addresses");
+      return;
+    }
 
     const url =
       `${GT}/simple/networks/${CHAIN.geckoTerminalNetwork}/token_price/` +
       `${addresses.join(",")}?include_24hr_price_change=true`;
 
+    console.log("MARKET DATA REQUEST:", url);
+
     const res = await getJSON(url);
+
+    console.log("MARKET DATA RESPONSE:", res);
 
     const attrs = res?.data?.attributes || {};
     const prices = attrs.token_prices || {};
@@ -88,10 +98,13 @@ async function refreshRealMarketData() {
 
       if (Number.isFinite(change)) {
         market.chg = change;
+        market.real = true;
       }
     }
 
-    document.dispatchEvent(new CustomEvent("wsex:market"));
+    document.dispatchEvent(
+      new CustomEvent("wsex:market")
+    );
 
   } catch (err) {
     console.error("REAL MARKET DATA ERROR:", err);
@@ -1183,11 +1196,10 @@ liveTickers();
 
   console.log("%cWALLSTREET.EXE", "font: bold 28px Inter, sans-serif; color:#3dff7a");
   console.log("%cSYSTEM STATUS: STILL RUNNING.\nType HELP in the terminal.", "color:#8a939c; font-family: monospace");
-})();
-
-refreshRealMarketData();
+  refreshRealMarketData();
 
 setInterval(
   refreshRealMarketData,
   CFG.MARKET_DATA?.refreshMs || 15000
 );
+})();
