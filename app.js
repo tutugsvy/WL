@@ -91,7 +91,7 @@ async function refreshRealMarketData() {
       }
     }
 
-    renderAll();
+    document.dispatchEvent(new CustomEvent("wsex:market"));
 
   } catch (err) {
     console.error("REAL MARKET DATA ERROR:", err);
