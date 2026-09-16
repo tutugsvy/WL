@@ -8,12 +8,12 @@ window.WSEX_CONFIG = {
   },
 
   CHAIN: {
-    id: 4663,
-    hexId: "0x1237",
-    name: "Robinhood Chain",
-    rpc: "https://rpc.mainnet.chain.robinhood.com",
-    explorer: "https://robinhoodchain.blockscout.com",
-    currency: { name: "Ether", symbol: "ETH", decimals: 18 },
+    id: 5042,
+    hexId: "0x13b2",
+    name: "Arc",
+    rpc: "https://argus.world/rpc",
+    explorer: "https://explorer.arc.network",
+    currency: { name: "USD Coin", symbol: "USDC", decimals: 18 },
     
     weth: "0x0bd7d308f8e1639fab988df18a8011f41eacad73",
     

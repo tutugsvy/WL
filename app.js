@@ -28,7 +28,7 @@
   
   const CFG = window.WSEX_CONFIG || {};
   const TOKEN = Object.assign({ address: "0x0000000000000000000000000000000000000000", symbol: "WSEX", decimals: 18, totalSupply: 1e9 }, CFG.TOKEN);
-  const CHAIN = Object.assign({ id: 4663, hexId: "0x1237", name: "Robinhood Chain", rpc: "https://rpc.mainnet.chain.robinhood.com", explorer: "https://robinhoodchain.blockscout.com", currency: { name: "Ether", symbol: "ETH", decimals: 18 }, weth: "", geckoTerminalNetwork: "robinhood", dexscreenerChain: "robinhood" }, CFG.CHAIN);
+  const CHAIN = Object.assign({ id: 5042, hexId: "0x13b2", name: "Arc", rpc: "https://argus.world/rpc", explorer: "https://explorer.arc.network", currency: { name: "USD Coin", symbol: "USDC", decimals: 18 }, weth: "", geckoTerminalNetwork: "arc", dexscreenerChain: "arc" }, CFG.CHAIN);
   const PRICE = Object.assign({ source: "geckoterminal", refreshMs: 30000, pons: { chartUrl: "", corsProxy: "" } }, CFG.PRICE);
   const HOLD = Object.assign({ watchlist: [], useBlockscout: true, proMinHold: 0 }, CFG.HOLDINGS);
   const LINKS = Object.assign({ buy: "", chart: "", x: "", telegram: "" }, CFG.LINKS);
