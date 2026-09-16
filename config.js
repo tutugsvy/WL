@@ -1,8 +1,8 @@
-window.OWN_CONFIG = {
+window.WSEX_CONFIG = {
   TOKEN: {
-    address: "0xE09e97A5F644d376cbE388D66cb77a1692fa0C20",
-    symbol: "OWN",
-    name: "Own Vault",
+    address: "0xa5af66ba606e2a322db1695f0eb7181bb7cd6d70",
+    symbol: "WSEX",
+    name: "WALLSTREET.EXE",
     decimals: 18,
     totalSupply: 1_000_000_000,
   },
@@ -57,18 +57,18 @@ window.OWN_CONFIG = {
     pitch: [
       "Arc is the chain where tokenized markets and vault assets move 24/7 with native USDC for gas and settlement.",
       "WALLSTREET.EXE is that terminal: a Bloomberg-style, retro trading desk that reads real balances, real prices and real charts straight from Arc. No signup. No custody. Connect a wallet and it runs.",
-      "$OWN is the access key. Hold it, and the terminal unlocks.",
+      "$WSEX is the access key. Hold it, and the terminal unlocks.",
     ],
     features: [
       { status: "LIVE", name: "WALLET CONNECT → REAL PORTFOLIO", desc: "Connect any EVM wallet. TOTAL VALUE is computed from real on-chain holdings on Arc: native USDC, tokenized assets, stablecoins." },
-      { status: "LIVE", name: "LIVE $OWN FEED", desc: "Price, 24h change, volume, FDV and chart data from Argus for the live Arc token market." },
+      { status: "LIVE", name: "LIVE $WSEX FEED", desc: "Price, 24h change, volume, FDV and chart data from Argus for the live Arc token market." },
       { status: "BUILDING", name: "ARC TOKEN WATCHLIST", desc: "Track Arc assets with native USDC settlement and 24/7 market data." },
-      { status: "BUILDING", name: "TERMINAL PRO (TOKEN-GATED)", desc: "Whale feed, price alerts, PnL tracker and multi-wallet view. Unlocked by holding $OWN — verified with a balanceOf call, no account needed." },
+      { status: "BUILDING", name: "TERMINAL PRO (TOKEN-GATED)", desc: "Whale feed, price alerts, PnL tracker and multi-wallet view. Unlocked by holding $WSEX — verified with a balanceOf call, no account needed." },
       { status: "PLANNED", name: "FEE FLYWHEEL", desc: "Creator trading fees from the Argus launch flow into a public treasury wallet used for buybacks and product development. Every transaction is visible on-chain." },
       { status: "PLANNED", name: "AGENT MODE", desc: "An open API + MCP endpoint so AI agents can query the terminal. Arc is pushing agentic trading; WALLSTREET.EXE speaks that language." },
     ],
     utility: [
-      { k: "ACCESS", v: "Hold $OWN → unlock TERMINAL PRO" },
+      { k: "ACCESS", v: "Hold $WSEX → unlock TERMINAL PRO" },
       { k: "FEES", v: "Launch fees → treasury → buybacks" },
       { k: "NETWORK", v: "Arc native USDC on Arc" },
       { k: "CULTURE", v: "The meme is the marketing" },

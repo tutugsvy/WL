@@ -26,8 +26,8 @@
   const GREEN = "#3dff7a", RED = "#ff4d4d", GRAY = "#8a939c", DIM = "rgba(61,255,122,0.08)";
 
   
-  const CFG = window.OWN_CONFIG || {};
-  const TOKEN = Object.assign({ address: "0x0000000000000000000000000000000000000000", symbol: "OWN", decimals: 18, totalSupply: 1e9 }, CFG.TOKEN);
+  const CFG = window.WSEX_CONFIG || {};
+  const TOKEN = Object.assign({ address: "0x0000000000000000000000000000000000000000", symbol: "WSEX", decimals: 18, totalSupply: 1e9 }, CFG.TOKEN);
   const CHAIN = Object.assign({ id: 5042, hexId: "0x13b2", name: "Arc", rpc: "https://argus.world/rpc", explorer: "https://explorer.arc.network", currency: { name: "USD Coin", symbol: "USDC", decimals: 18 }, weth: "", geckoTerminalNetwork: "arc", dexscreenerChain: "arc" }, CFG.CHAIN);
   const PRICE = Object.assign({ source: "geckoterminal", refreshMs: 30000, pons: { chartUrl: "", corsProxy: "" } }, CFG.PRICE);
   const HOLD = Object.assign({ watchlist: [], useBlockscout: true, proMinHold: 0 }, CFG.HOLDINGS);
@@ -54,7 +54,7 @@
   const ARGUS_CA = "0xeCe5cA8bf9220718E5727754026757512212cb3c";
 
   const MARKETS = [
-    { sym: "OWN", name: "OWN VAULT", price: 0.00000296, chg: 0, vol: 0, kind: "crypto", status: "vol" },
+    { sym: "WSEX", name: "WALLSTREET.EXE", price: 0, chg: 0, vol: 0, kind: "crypto", status: "vol" },
     { sym: "BTC", name: "BITCOIN", price: 118_420, chg: 0, vol: 0, kind: "crypto" },
     { sym: "ETH", name: "ETHEREUM", price: 4_612.5, chg: 0, vol: 0, kind: "crypto" },
     { sym: "DOGE", name: "DOGECOIN", price: 0.24, chg: 0, vol: 0, kind: "crypto" },
@@ -757,16 +757,16 @@
       pfChange.className = "pf__value " + (up ? "c-green" : "c-red");
       const top = h.rows.filter((r) => r.qty > 0 || r.native).slice(0, 8);
       pfHold.innerHTML = top.map((r) => `<div class="hold${r.wsex ? " hold--wsex" : ""}"><b>${r.wsex ? "$" : ""}${r.symbol}</b><span class="hold__qty">${fmtQty(r.qty)}</span><span class="hold__usd">${Number.isFinite(r.usd) ? fmtUsd(r.usd) : "—"}</span></div>`).join("")
-        + `<div class="hold__note">${h.unpriced ? `${h.unpriced} UNPRICED · ` : ""}PRICES: GECKOTERMINAL · RPC: ${CHAIN.name.toUpperCase()}${LAUNCHED ? "" : " · $OWN: PRE-LAUNCH"}</div>`;
+        + `<div class="hold__note">${h.unpriced ? `${h.unpriced} UNPRICED · ` : ""}PRICES: GECKOTERMINAL · RPC: ${CHAIN.name.toUpperCase()}${LAUNCHED ? "" : " · $WSEX: PRE-LAUNCH"}</div>`;
       
       $("#deskPf").textContent = fmtUsd(h.total);
       const dc = $("#deskPfChg"); dc.textContent = pfChange.textContent; dc.className = up ? "c-green" : "c-red";
       $("#deskPfHeld").textContent = LAUNCHED ? fmtQty(h.wsexQty) : "PRE-LAUNCH";
-      $("#deskPfRow4K").textContent = "$OWN PRICE";
+      $("#deskPfRow4K").textContent = "$WSEX PRICE";
       $("#deskPfRow4V").textContent = S.feed ? "$" + fmtPrice(S.feed.priceUsd) : (LAUNCHED ? "—" : "TBA");
       const acc = $("#deskPfAccess");
       const pro = LAUNCHED && HOLD.proMinHold > 0 && h.wsexQty >= HOLD.proMinHold;
-      acc.textContent = pro ? "PRO" : LAUNCHED ? `BASIC (${fmtQty(HOLD.proMinHold)} $OWN → PRO)` : "BASIC";
+      acc.textContent = pro ? "PRO" : LAUNCHED ? `BASIC (${fmtQty(HOLD.proMinHold)} $WSEX → PRO)` : "BASIC";
       acc.className = pro ? "c-green" : "c-gray";
     };
 
@@ -883,7 +883,7 @@
 
     
     const tb = $("#deskTickers tbody");
-    const rowsData = MARKETS.filter((m) => ["OWN", "BTC", "ETH", "DOGE", "SOL", "ARGUS"].includes(m.sym));
+    const rowsData = MARKETS.filter((m) => ["WSEX", "BTC", "ETH", "DOGE", "SOL", "ARGUS"].includes(m.sym));
     tb.innerHTML = rowsData.map((m) => `<tr data-sym="${m.sym}"><td>${m.sym}</td><td>${fmtPrice(m.price)}</td><td class="tk__pct ${m.chg >= 0 ? "up" : "down"}">${fmtPct(m.chg)}</td></tr>`).join("");
     const paintRow = (tr, m, d) => {
       tr.children[1].textContent = fmtPrice(m.price);
@@ -899,7 +899,7 @@
       m.chg += d; m.price *= 1 + d / 100;
       paintRow(tr, m, d);
     }, 1100);
-    document.addEventListener("wsex:price", () => { const tr = $('tr[data-sym="OWN"]', tb); if (tr) paintRow(tr, MARKETS[0], MARKETS[0].chg); });
+    document.addEventListener("wsex:price", () => { const tr = $('tr[data-sym="WSEX"]', tb); if (tr) paintRow(tr, MARKETS[0], MARKETS[0].chg); });
 
     
     const warn = $("#warnWin");
@@ -913,7 +913,7 @@
 
     
     const news = [
-      "$OWN up. Nobody knows why. Everyone pretends to.",
+      "$WSEX up. Nobody knows why. Everyone pretends to.",
       "Terminal user reports seeing 'SYSTEM ONLINE' in dreams.",
       "Bear spotted near exit. Bull blocking door.",
       "Windows 98 declared 'financially relevant again'.",
@@ -944,11 +944,11 @@
     };
     body.addEventListener("click", () => input.focus());
     const cmds = {
-      help: () => print("COMMANDS:\n  MARKET    show market snapshot\n  PRICE     live $OWN quote\n  CONNECT   connect wallet\n  WALLET    show real holdings\n  WHOAMI    who are you\n  BUY       buy $OWN\n  SELL      attempt to sell\n  HOLD      do nothing (recommended)\n  PANIC     panic\n  STATUS    system status\n  CONTRACT  show contract\n  CLEAR     clear screen\n  EXIT      close terminal", "dim"),
+      help: () => print("COMMANDS:\n  MARKET    show market snapshot\n  PRICE     live $WSEX quote\n  CONNECT   connect wallet\n  WALLET    show real holdings\n  WHOAMI    who are you\n  BUY       buy $WSEX\n  SELL      attempt to sell\n  HOLD      do nothing (recommended)\n  PANIC     panic\n  STATUS    system status\n  CONTRACT  show contract\n  CLEAR     clear screen\n  EXIT      close terminal", "dim"),
       price: () => {
         if (!S.feed) return print(LAUNCHED ? "FEED: WAITING FOR FIRST QUOTE..." : "FEED: OFFLINE (PRE-LAUNCH). CHART IS SIMULATED.", "dim");
         const q = S.feed;
-        print(`$OWN  $${fmtPrice(q.priceUsd)}  ${fmtPct(q.change24h)}${q.changeLabel ? " " + q.changeLabel : " 24H"}\nVOL 24H ${fmtBig(q.volume24h)}   FDV ${fmtBig(q.fdvUsd)}   LIQ ${fmtBig(q.liquidityUsd)}\nSOURCE: ${q.source}`, "hi");
+        print(`$WSEX  $${fmtPrice(q.priceUsd)}  ${fmtPct(q.change24h)}${q.changeLabel ? " " + q.changeLabel : " 24H"}\nVOL 24H ${fmtBig(q.volume24h)}   FDV ${fmtBig(q.fdvUsd)}   LIQ ${fmtBig(q.liquidityUsd)}\nSOURCE: ${q.source}`, "hi");
       },
       connect: () => { if (W.address) return print(`ALREADY CONNECTED: ${W.address}`); print("OPENING WALLET SELECTOR...", "dim"); W.open(); },
       wallet: () => {
@@ -958,15 +958,15 @@
         print(`ADDRESS ${W.address}\nNETWORK ${CHAIN.name.toUpperCase()}`, "dim");
         print(h.rows.map((r) => `  ${r.symbol.padEnd(8)} ${fmtQty(r.qty).padStart(16)}  ${(Number.isFinite(r.usd) ? "$" + fmtBig(r.usd) : "UNPRICED").padStart(12)}`).join("\n"));
         print(`TOTAL   $${fmtBig(h.total)}  ${Number.isFinite(h.change24h) ? fmtPct(h.change24h) + " 24H" : ""}`, "hi");
-        print(h.wsexQty >= HOLD.proMinHold ? "ACCESS: TERMINAL PRO" : `ACCESS: BASIC (HOLD ${HOLD.proMinHold.toLocaleString()} $OWN FOR PRO)`, h.wsexQty >= HOLD.proMinHold ? "hi" : "dim");
+        print(h.wsexQty >= HOLD.proMinHold ? "ACCESS: TERMINAL PRO" : `ACCESS: BASIC (HOLD ${HOLD.proMinHold.toLocaleString()} $WSEX FOR PRO)`, h.wsexQty >= HOLD.proMinHold ? "hi" : "dim");
       },
       market: () => print(MARKETS.slice(0, 8).map((m) => `  ${m.sym.padEnd(6)} ${fmtPrice(m.price).padStart(14)}  ${fmtPct(m.chg).padStart(8)}`).join("\n")),
-      buy: () => { print("EXECUTING BUY ORDER... FILLED.", "hi"); print(`ACQUIRED ${Math.round(rand(10_000, 900_000)).toLocaleString()} $OWN @ ${fmtPrice(mainChart.price)}`); print("WARNING: YOU ARE NOW EMOTIONALLY INVOLVED.", "err"); glitchNow(); },
+      buy: () => { print("EXECUTING BUY ORDER... FILLED.", "hi"); print(`ACQUIRED ${Math.round(rand(10_000, 900_000)).toLocaleString()} $WSEX @ ${fmtPrice(mainChart.price)}`); print("WARNING: YOU ARE NOW EMOTIONALLY INVOLVED.", "err"); glitchNow(); },
       sell: () => print("ERROR: SELL FUNCTION NOT FOUND.\nDID YOU MEAN: HOLD?", "err"),
       hold: () => print("HOLDING... HOLDING... STILL HOLDING.\nRESULT: OK"),
       panic: () => { print("PANIC INITIATED.", "err"); print("PANIC COMPLETE. NOTHING CHANGED.", "dim"); print("SYSTEM CONTINUES RUNNING.", "hi"); $("#warnWin").hidden = false; },
       status: () => print(`SYSTEM: ONLINE\nMARKET: OPEN\nVOLATILITY: EXTREME\nUPTIME: ${$("#uptime").textContent}\nHOPE: 12%`),
-      contract: () => print(`$OWN CONTRACT (${CHAIN.name.toUpperCase()}):\n${TOKEN.address}${LAUNCHED ? "" : "\n(PRE-LAUNCH — SET IN config.js)"}`, "hi"),
+      contract: () => print(`$WSEX CONTRACT (${CHAIN.name.toUpperCase()}):\n${TOKEN.address}${LAUNCHED ? "" : "\n(PRE-LAUNCH — SET IN config.js)"}`, "hi"),
       clear: () => { out.textContent = ""; },
       exit: () => print("ACCESS DENIED. THERE IS NO EXIT.", "err"),
       dir: () => print(" Volume in drive C is WALLSTREET\n\n  WALLSTREET  EXE   1,000,000,000  09-13-26  9:41a\n  PANIC       LOG          48,213  09-13-26  9:41a\n  LOSSES      TXT     <HIDDEN>\n  HOPE        DLL             12  01-01-98 12:00a", "dim"),
@@ -1059,7 +1059,7 @@
       "MARKET CONNECTION ESTABLISHED", "ARGUS PRICE UPDATE", "BUY ORDER DETECTED", "VOLATILITY SPIKE",
       "USER PANIC DETECTED", "SYSTEM CONTINUES RUNNING", "ARGUS PRICE UPDATE", "SELL ORDER REJECTED",
       "WHALE ENTERED THE CHAT", "CHART BROKE. FIXING WITH TAPE.", "USER REFRESHED PAGE (x47)", "HOPE.DLL RELOADED",
-      "BTC PRICE UPDATE", "$OWN VOLUME ANOMALY", "COFFEE LEVELS: CRITICAL", "MARKET DID A THING",
+      "BTC PRICE UPDATE", "$WSEX VOLUME ANOMALY", "COFFEE LEVELS: CRITICAL", "MARKET DID A THING",
       "REGULATOR NOT FOUND", "DIP PURCHASED", "SYSTEM STATUS: STILL RUNNING",
     ];
     const warns = ["USER PANIC DETECTED", "VOLATILITY SPIKE", "SELL ORDER REJECTED", "COFFEE LEVELS: CRITICAL"];
