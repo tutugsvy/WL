@@ -13,7 +13,7 @@ window.WSEX_CONFIG = {
     name: "Arc",
     rpc: "/api/rpc",
     walletRpc: "https://argus.world/rpc",
-    explorer: "https://explorerarc.org",
+    explorer: "https://arcexplorer.org",
     currency: { name: "USD Coin", symbol: "USDC", decimals: 18 },
     
     weth: "",
