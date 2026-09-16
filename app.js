@@ -51,21 +51,15 @@
   };
 
   
+  const ARGUS_CA = "0xeCe5cA8bf9220718E5727754026757512212cb3c";
+
   const MARKETS = [
-    { sym: "OWN", name: "WALLSTREET.EXE", price: 0.0421, chg: 42.0, vol: 18_400_000, kind: "crypto", status: "vol" },
-    { sym: "NVDA", name: "NVIDIA", price: 1184.32, chg: 4.82, vol: 41_200_000, kind: "eq" },
-    { sym: "AAPL", name: "APPLE", price: 231.14, chg: -1.24, vol: 58_900_000, kind: "eq" },
-    { sym: "TSLA", name: "TESLA", price: 402.77, chg: 2.91, vol: 96_100_000, kind: "eq" },
-    { sym: "MSFT", name: "MICROSOFT", price: 512.6, chg: 1.42, vol: 22_300_000, kind: "eq" },
-    { sym: "AMZN", name: "AMAZON", price: 218.05, chg: 0.63, vol: 34_700_000, kind: "eq" },
-    { sym: "GME", name: "GAMESTOP", price: 28.41, chg: 12.47, vol: 88_800_000, kind: "eq", status: "halt" },
-    { sym: "BTC", name: "BITCOIN", price: 118_420, chg: 3.42, vol: 31_000_000_000, kind: "crypto" },
-    { sym: "ETH", name: "ETHEREUM", price: 4_612.5, chg: 2.17, vol: 18_600_000_000, kind: "crypto" },
-    { sym: "SOL", name: "SOLANA", price: 241.9, chg: -3.08, vol: 4_100_000_000, kind: "crypto" },
-    { sym: "SPX", name: "S&P 500", price: 6_812.4, chg: 0.41, vol: 0, kind: "idx" },
-    { sym: "NDX", name: "NASDAQ 100", price: 24_910.2, chg: 0.88, vol: 0, kind: "idx" },
-    { sym: "DJI", name: "DOW JONES", price: 46_120.7, chg: -0.12, vol: 0, kind: "idx" },
-    { sym: "VIX", name: "VOLATILITY", price: 48.2, chg: 31.7, vol: 0, kind: "idx", status: "vol" },
+    { sym: "OWN", name: "OWN VAULT", price: 0.00000296, chg: 0, vol: 0, kind: "crypto", status: "vol" },
+    { sym: "BTC", name: "BITCOIN", price: 118_420, chg: 0, vol: 0, kind: "crypto" },
+    { sym: "ETH", name: "ETHEREUM", price: 4_612.5, chg: 0, vol: 0, kind: "crypto" },
+    { sym: "DOGE", name: "DOGECOIN", price: 0.24, chg: 0, vol: 0, kind: "crypto" },
+    { sym: "SOL", name: "SOLANA", price: 241.9, chg: 0, vol: 0, kind: "crypto" },
+    { sym: "ARGUS", name: "ARGUS", price: 0, chg: 0, vol: 0, kind: "crypto" },
   ];
 
   
@@ -581,6 +575,16 @@
       try {
         const q = await src(TOKEN.address);
         if (!Number.isFinite(q.priceUsd) || q.priceUsd <= 0) throw new Error("NO PRICE");
+        try {
+          const argusQuote = await src(ARGUS_CA);
+          const argusMarket = MARKETS.find((market) => market.sym === "ARGUS");
+          if (argusMarket && Number.isFinite(argusQuote.priceUsd)) {
+            argusMarket.price = argusQuote.priceUsd;
+            argusMarket.chg = Number.isFinite(argusQuote.change24h) ? argusQuote.change24h : 0;
+            argusMarket.vol = Number.isFinite(argusQuote.volume24h) ? argusQuote.volume24h : 0;
+            argusMarket.real = true;
+          }
+        } catch (_) { /* keep ARGUS as unavailable if its feed is unavailable */ }
         
         if (!q.candles && q.poolAddress && (q.poolAddress !== lastPool || Date.now() - candlesAt > 300000)) {
           try { q.candles = await fetchCandles(q.poolAddress); lastPool = q.poolAddress; candlesAt = Date.now(); } catch (_) {  }
@@ -879,7 +883,7 @@
 
     
     const tb = $("#deskTickers tbody");
-    const rowsData = MARKETS.filter((m) => ["OWN", "NVDA", "TSLA", "GME", "BTC", "ETH", "SOL"].includes(m.sym));
+    const rowsData = MARKETS.filter((m) => ["OWN", "BTC", "ETH", "DOGE", "SOL", "ARGUS"].includes(m.sym));
     tb.innerHTML = rowsData.map((m) => `<tr data-sym="${m.sym}"><td>${m.sym}</td><td>${fmtPrice(m.price)}</td><td class="tk__pct ${m.chg >= 0 ? "up" : "down"}">${fmtPct(m.chg)}</td></tr>`).join("");
     const paintRow = (tr, m, d) => {
       tr.children[1].textContent = fmtPrice(m.price);
@@ -1052,14 +1056,14 @@
     
     const log = $("#chaosLog");
     const events = [
-      "MARKET CONNECTION ESTABLISHED", "NVDA PRICE UPDATE", "BUY ORDER DETECTED", "VOLATILITY SPIKE",
-      "USER PANIC DETECTED", "SYSTEM CONTINUES RUNNING", "TSLA PRICE UPDATE", "SELL ORDER REJECTED",
+      "MARKET CONNECTION ESTABLISHED", "ARGUS PRICE UPDATE", "BUY ORDER DETECTED", "VOLATILITY SPIKE",
+      "USER PANIC DETECTED", "SYSTEM CONTINUES RUNNING", "ARGUS PRICE UPDATE", "SELL ORDER REJECTED",
       "WHALE ENTERED THE CHAT", "CHART BROKE. FIXING WITH TAPE.", "USER REFRESHED PAGE (x47)", "HOPE.DLL RELOADED",
       "BTC PRICE UPDATE", "$OWN VOLUME ANOMALY", "COFFEE LEVELS: CRITICAL", "MARKET DID A THING",
       "REGULATOR NOT FOUND", "DIP PURCHASED", "SYSTEM STATUS: STILL RUNNING",
     ];
     const warns = ["USER PANIC DETECTED", "VOLATILITY SPIKE", "SELL ORDER REJECTED", "COFFEE LEVELS: CRITICAL"];
-    const seed = ["MARKET CONNECTION ESTABLISHED", "NVDA PRICE UPDATE", "BUY ORDER DETECTED", "VOLATILITY SPIKE", "USER PANIC DETECTED", "SYSTEM CONTINUES RUNNING"];
+    const seed = ["MARKET CONNECTION ESTABLISHED", "ARGUS PRICE UPDATE", "BUY ORDER DETECTED", "VOLATILITY SPIKE", "USER PANIC DETECTED", "SYSTEM CONTINUES RUNNING"];
     let t = new Date(); t.setHours(9, 41, 2);
     const add = (msg) => {
       t = new Date(t.getTime() + Math.round(rand(1500, 4200)));
