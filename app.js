@@ -516,31 +516,34 @@
       };
     },
     
-    async pons(addr) {
-      const url = withAddr(PRICE.pons.chartUrl).replace(/\{address\}/g, addr);
-      const full = PRICE.pons.corsProxy ? PRICE.pons.corsProxy + encodeURIComponent(url) : url;
+    async argus(addr) {
+      const url = withAddr(PRICE.argus.tokenUrl).replace(/\{address\}/g, addr);
+      const full = PRICE.argus.corsProxy ? PRICE.argus.corsProxy + encodeURIComponent(url) : url;
       const r = await getJSON(full);
-      const pts = (r.points || []).filter((p) => Number.isFinite(p.price));
-      if (!pts.length) throw new Error("PONS: NO POINTS");
-      const q = Number(r.quoteUsd) || 1;
-      const first = pts[0], last = pts[pts.length - 1];
-      
-      const buckets = new Map();
-      for (const p of pts) {
-        const k = Math.floor(p.t / 60) * 60;
-        const b = buckets.get(k);
-        const px = p.price * q;
-        if (!b) buckets.set(k, { o: px, h: px, l: px, c: px, v: (p.volumeQuote || 0) * q });
-        else { b.h = Math.max(b.h, px); b.l = Math.min(b.l, px); b.c = px; b.v += (p.volumeQuote || 0) * q; }
-      }
-      const priceUsd = last.price * q;
+      const sparkline = (Array.isArray(r.sparkline) ? r.sparkline : []).map(Number).filter((p) => Number.isFinite(p) && p > 0);
+      if (!Number.isFinite(Number(r.price)) || Number(r.price) <= 0) throw new Error("ARGUS: NO PRICE");
+      if (!sparkline.length) throw new Error("ARGUS: NO SPARKLINE");
+      const q = Number(r.chain?.quoteUsd) || 1;
+      const prices = sparkline.map((p) => p * q);
+      const candles = prices.map((close, i) => {
+        const open = i ? prices[i - 1] : close;
+        return { o: open, h: Math.max(open, close), l: Math.min(open, close), c: close, v: 0 };
+      });
+      const first = prices[0], last = prices[prices.length - 1];
       return {
-        priceUsd, change24h: ((last.price - first.price) / first.price) * 100, changeLabel: (r.range || "").toUpperCase(),
-        volume24h: pts.reduce((s, p) => s + (p.volumeQuote || 0), 0) * q, fdvUsd: priceUsd * TOKEN.totalSupply,
-        liquidityUsd: NaN, poolAddress: null, source: "PONS", candles: [...buckets.values()],
+        priceUsd: Number(r.price) * q,
+        change24h: Number.isFinite(Number(r.change24h)) ? Number(r.change24h) : ((last - first) / first) * 100,
+        volume24h: Number(r.volume24h) || 0,
+        fdvUsd: Number(r.marketCap) || Number(r.price) * Number(r.totalSupply || TOKEN.totalSupply),
+        liquidityUsd: Number(r.liquidityUsd) || 0,
+        poolAddress: r.poolAddress || null,
+        source: "ARGUS",
+        candles,
+        candleMode: "DERIVED_FROM_SPARKLINE",
       };
     },
   };
+
   const fetchCandles = async (pool) => {
     const r = await getJSON(`${GT}/networks/${CHAIN.geckoTerminalNetwork}/pools/${pool}/ohlcv/minute?aggregate=5&limit=64&currency=usd`);
     const list = (r.data.attributes.ohlcv_list || []).slice().sort((a, b) => a[0] - b[0]);

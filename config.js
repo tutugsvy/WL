@@ -1,8 +1,8 @@
 window.WSEX_CONFIG = {
   TOKEN: {
-    address: "0x0000000000000000000000000000000000000000", 
-    symbol: "WSEX",
-    name: "WALLSTREET.EXE",
+    address: "0xE09e97A5F644d376cbE388D66cb77a1692fa0C20",
+    symbol: "OWN",
+    name: "Own Vault",
     decimals: 18,
     totalSupply: 1_000_000_000,
   },
@@ -22,11 +22,10 @@ window.WSEX_CONFIG = {
   },
 
   PRICE: {
-    source: "geckoterminal", 
-    refreshMs: 30_000,       
-    pons: {
-      chartUrl: "https://www.ponsfamily.com/api/pons-v2-market/{address}/chart?range=1h",
-      
+    source: "argus",
+    refreshMs: 15_000,
+    argus: {
+      tokenUrl: "/api/argus/{address}",
       corsProxy: "",
     },
   },
