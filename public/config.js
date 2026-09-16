@@ -1,6 +1,6 @@
 window.WSEX_CONFIG = {
   TOKEN: {
-    address: "0xa5af66ba606e2a322db1695f0eb7181bb7cd6d70",
+    address: "0xeCe5cA8bf9220718E5727754026757512212cb3c",
     symbol: "WSEX",
     name: "WALLSTREET.EXE",
     decimals: 18,
@@ -13,7 +13,7 @@ window.WSEX_CONFIG = {
     name: "Arc",
     rpc: "/api/rpc",
     walletRpc: "https://argus.world/rpc",
-    explorer: "https://explorer.arc.network",
+    explorer: "https://explorerarc.org",
     currency: { name: "USD Coin", symbol: "USDC", decimals: 18 },
     
     weth: "",
