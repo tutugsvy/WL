@@ -1,4 +1,4 @@
-window.WSEX_CONFIG = {
+window.OWN_CONFIG = {
   TOKEN: {
     address: "0xE09e97A5F644d376cbE388D66cb77a1692fa0C20",
     symbol: "OWN",
@@ -15,13 +15,13 @@ window.WSEX_CONFIG = {
     explorer: "https://explorer.arc.network",
     currency: { name: "USD Coin", symbol: "USDC", decimals: 18 },
     
-    weth: "0x0bd7d308f8e1639fab988df18a8011f41eacad73",
+    weth: "",
     
-    geckoTerminalNetwork: "robinhood",
-    dexscreenerChain: "robinhood",
+    geckoTerminalNetwork: "arc",
+    dexscreenerChain: "arc",
   },
 
-  PRICE: {
+    PRICE: {
     source: "argus",
     refreshMs: 15_000,
     argus: {
@@ -34,8 +34,6 @@ window.WSEX_CONFIG = {
   
   HOLDINGS: {
     watchlist: [
-      { symbol: "USDG", address: "0x5fc5360d0400a0fd4f2af552add042d716f1d168", decimals: 6 },
-      { symbol: "WETH", address: "0x0bd7d308f8e1639fab988df18a8011f41eacad73", decimals: 18 },
       { symbol: "NVDA", address: "0xd0601ce157db5bdc3162bbac2a2c8af5320d9eec", decimals: 18 },
       { symbol: "SPCX", address: "0x4a0E65A3EcceC6dBe60AE065F2e7bb85Fae35eEa", decimals: 18 },
       { symbol: "TSLA", address: "0x322F0929c4625eD5bAd873c95208D54E1c003b2d", decimals: 18 },
@@ -51,8 +49,8 @@ window.WSEX_CONFIG = {
   },
 
   LINKS: {
-    buy: "https://www.ponsfamily.com/launchpad/{address}",
-    chart: "https://www.geckoterminal.com/robinhood/tokens/{address}",
+    buy: "https://argus.world/token/{address}",
+    chart: "https://argus.world/token/{address}",
     x: "",
     telegram: "",
   },
@@ -62,22 +60,22 @@ window.WSEX_CONFIG = {
     eyebrow: "// PRODUCT.SYS",
     headline: "THE TERMINAL IS THE PRODUCT.",
     pitch: [
-      "Robinhood Chain is the first chain where NVDA, TSLA and AAPL trade 24/7 as tokens. It has DEXs and wallets — but no terminal.",
-      "WALLSTREET.EXE is that terminal: a Bloomberg-style, retro trading desk that reads real balances, real prices and real charts straight from the chain. No signup. No custody. Connect a wallet and it runs.",
-      "$WSEX is the access key. Hold it, and the terminal unlocks.",
+      "Arc is the chain where tokenized markets and vault assets move 24/7 with native USDC for gas and settlement.",
+      "WALLSTREET.EXE is that terminal: a Bloomberg-style, retro trading desk that reads real balances, real prices and real charts straight from Arc. No signup. No custody. Connect a wallet and it runs.",
+      "$OWN is the access key. Hold it, and the terminal unlocks.",
     ],
     features: [
-      { status: "LIVE", name: "WALLET CONNECT → REAL PORTFOLIO", desc: "Connect any EVM wallet. TOTAL VALUE is computed from real on-chain holdings on Robinhood Chain: ETH, $WSEX, stock tokens, stablecoins." },
-      { status: "LIVE", name: "LIVE $WSEX FEED", desc: "Price, 24h change, volume, FDV and OHLCV chart pulled from on-chain DEX data (GeckoTerminal / Dexscreener / Pons) the moment the contract goes live." },
-      { status: "BUILDING", name: "STOCK TOKEN WATCHLIST", desc: "Replace the simulated tape with real Robinhood Chain stock tokens (NVDA, TSLA, AAPL, SPY…) — 24/7 prices, no market hours." },
-      { status: "BUILDING", name: "TERMINAL PRO (TOKEN-GATED)", desc: "Whale feed, price alerts, PnL tracker and multi-wallet view. Unlocked by holding $WSEX — verified with a balanceOf call, no account needed." },
-      { status: "PLANNED", name: "FEE FLYWHEEL", desc: "Creator trading fees from the Pons launch flow into a public treasury wallet used for buybacks and product development. Every transaction is visible on-chain." },
-      { status: "PLANNED", name: "AGENT MODE", desc: "An open API + MCP endpoint so AI agents can query the terminal. Robinhood is pushing agentic trading; WALLSTREET.EXE speaks that language." },
+      { status: "LIVE", name: "WALLET CONNECT → REAL PORTFOLIO", desc: "Connect any EVM wallet. TOTAL VALUE is computed from real on-chain holdings on Arc: native USDC, tokenized assets, stablecoins." },
+      { status: "LIVE", name: "LIVE $OWN FEED", desc: "Price, 24h change, volume, FDV and chart data from Argus for the live Arc token market." },
+      { status: "BUILDING", name: "ARC TOKEN WATCHLIST", desc: "Track Arc assets with native USDC settlement and 24/7 market data." },
+      { status: "BUILDING", name: "TERMINAL PRO (TOKEN-GATED)", desc: "Whale feed, price alerts, PnL tracker and multi-wallet view. Unlocked by holding $OWN — verified with a balanceOf call, no account needed." },
+      { status: "PLANNED", name: "FEE FLYWHEEL", desc: "Creator trading fees from the Argus launch flow into a public treasury wallet used for buybacks and product development. Every transaction is visible on-chain." },
+      { status: "PLANNED", name: "AGENT MODE", desc: "An open API + MCP endpoint so AI agents can query the terminal. Arc is pushing agentic trading; WALLSTREET.EXE speaks that language." },
     ],
     utility: [
-      { k: "ACCESS", v: "Hold $WSEX → unlock TERMINAL PRO" },
+      { k: "ACCESS", v: "Hold $OWN → unlock TERMINAL PRO" },
       { k: "FEES", v: "Launch fees → treasury → buybacks" },
-      { k: "NETWORK", v: "Robinhood Chain native, day one" },
+      { k: "NETWORK", v: "Arc native USDC on Arc" },
       { k: "CULTURE", v: "The meme is the marketing" },
     ],
   },
