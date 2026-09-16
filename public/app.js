@@ -28,7 +28,7 @@
   
   const CFG = window.WSEX_CONFIG || {};
   const TOKEN = Object.assign({ address: "0x0000000000000000000000000000000000000000", symbol: "WSEX", decimals: 18, totalSupply: 1e9 }, CFG.TOKEN);
-  const CHAIN = Object.assign({ id: 5042, hexId: "0x13b2", name: "Arc", rpc: "https://argus.world/rpc", explorer: "https://explorer.arc.network", currency: { name: "USD Coin", symbol: "USDC", decimals: 18 }, weth: "", geckoTerminalNetwork: "arc", dexscreenerChain: "arc" }, CFG.CHAIN);
+  const CHAIN = Object.assign({ id: 5042, hexId: "0x13b2", name: "Arc", rpc: "/api/rpc", walletRpc: "https://argus.world/rpc", explorer: "https://explorer.arc.network", currency: { name: "USD Coin", symbol: "USDC", decimals: 18 }, weth: "", geckoTerminalNetwork: "arc", dexscreenerChain: "arc" }, CFG.CHAIN);
   const PRICE = Object.assign({ source: "geckoterminal", refreshMs: 30000, pons: { chartUrl: "", corsProxy: "" } }, CFG.PRICE);
   const HOLD = Object.assign({ watchlist: [], useBlockscout: true, proMinHold: 0 }, CFG.HOLDINGS);
   const LINKS = Object.assign({ buy: "", chart: "", x: "", telegram: "" }, CFG.LINKS);
@@ -467,7 +467,7 @@
   
   const rpcBatch = async (calls) => {
     const body = calls.map((c, i) => ({ jsonrpc: "2.0", id: i + 1, method: c.method, params: c.params }));
-    const r = await fetch(CHAIN.rpc, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+    const r = await fetch(CHAIN.rpc, { method: "POST", headers: { "content-type": "application/json", accept: "application/json" }, body: JSON.stringify(body) });
     if (!r.ok) throw new Error(`RPC HTTP ${r.status}`);
     const out = await r.json();
     const byId = new Map((Array.isArray(out) ? out : [out]).map((x) => [x.id, x]));
@@ -631,14 +631,31 @@
       modal.hidden = false;
     };
 
+    const ensureArc = async (provider) => {
+      const current = await provider.request({ method: "eth_chainId" });
+      if (String(current).toLowerCase() === CHAIN.hexId.toLowerCase()) return true;
+      try {
+        await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: CHAIN.hexId }] });
+      } catch (e) {
+        if (e && (e.code === 4902 || /unrecognized chain|unknown chain/i.test(String(e.message || "")))) {
+          await provider.request({ method: "wallet_addEthereumChain", params: [{ chainId: CHAIN.hexId, chainName: CHAIN.name, nativeCurrency: CHAIN.currency, rpcUrls: [CHAIN.walletRpc || CHAIN.rpc], blockExplorerUrls: [CHAIN.explorer] }] });
+        } else throw e;
+      }
+      const verified = await provider.request({ method: "eth_chainId" });
+      if (String(verified).toLowerCase() !== CHAIN.hexId.toLowerCase()) throw new Error("ARC NETWORK SWITCH NOT CONFIRMED");
+      return true;
+    };
+
     const connect = async (p, silent = false) => {
       btn.classList.add("is-busy");
       try {
         const accounts = await p.provider.request({ method: silent ? "eth_accounts" : "eth_requestAccounts" });
         if (!accounts || !accounts.length) { if (!silent) toast("WALLET: NO ACCOUNT AUTHORIZED"); return; }
+        await ensureArc(p.provider);
         st.address = accounts[0]; st.provider = p.provider; st.rdns = p.info.rdns;
         localStorage.setItem(KEY, p.info.rdns);
         p.provider.on && p.provider.on("accountsChanged", (a) => { if (!a || !a.length) disconnect(); else { st.address = a[0]; onConnected(); } });
+        p.provider.on && p.provider.on("chainChanged", () => { if (st.address) onConnected(); });
         p.provider.on && p.provider.on("disconnect", () => disconnect());
         onConnected();
         if (!silent) toast(`WALLET CONNECTED: ${shortAddr(st.address).toUpperCase()}`);
@@ -680,50 +697,11 @@
 
     
     const loadHoldings = async (owner) => {
-      const tokens = new Map(); 
-      const add = (t) => { const k = t.address.toLowerCase(); if (!tokens.has(k)) tokens.set(k, { ...t, address: k }); return tokens.get(k); };
-      if (LAUNCHED) add({ symbol: TOKEN.symbol, address: TOKEN.address, decimals: TOKEN.decimals, wsex: true });
-      for (const t of HOLD.watchlist || []) if (isAddr(t.address)) add(t);
-
-      
-      if (HOLD.useBlockscout) {
-        try {
-          const r = await getJSON(`${CHAIN.explorer}/api/v2/addresses/${owner}/token-balances`, 6000);
-          for (const it of Array.isArray(r) ? r : []) {
-            if (!it.token || it.token.type !== "ERC-20" || !isAddr(it.token.address)) continue;
-            const t = add({ symbol: it.token.symbol || "?", address: it.token.address, decimals: +it.token.decimals || 18 });
-            t.qty = Number(it.value) / 10 ** t.decimals;
-            if (it.token.exchange_rate) t.bsPrice = +it.token.exchange_rate;
-          }
-        } catch (_) {  }
-      }
-
-      
-      const list = [...tokens.values()];
-      const res = await rpcBatch([{ method: "eth_getBalance", params: [owner, "latest"] }, ...list.map((t) => balanceOfCall(t.address, owner))]);
-      const nativeQty = hexToUnits(res[0], 18);
-      list.forEach((t, i) => { try { t.qty = hexToUnits(res[i + 1], t.decimals); } catch (_) { t.qty = t.qty || 0; } });
-
-      
-      const prices = {}, chg = {};
-      const addrs = [...new Set([CHAIN.weth, ...list.filter((t) => t.qty > 0).map((t) => t.address)].filter(isAddr).map((a) => a.toLowerCase()))];
-      for (let i = 0; i < addrs.length; i += 30) {
-        try {
-          const r = await getJSON(`${GT}/simple/networks/${CHAIN.geckoTerminalNetwork}/token_price/${addrs.slice(i, i + 30).join(",")}?include_24hr_price_change=true`);
-          const a = r.data.attributes;
-          for (const k in a.token_prices || {}) prices[k.toLowerCase()] = +a.token_prices[k];
-          for (const k in a.h24_price_change_percentage || {}) chg[k.toLowerCase()] = +a.h24_price_change_percentage[k];
-        } catch (_) {  }
-      }
-      const nativePrice = CHAIN.currency.symbol === "USDC" ? 1 : prices[(CHAIN.weth || "").toLowerCase()];
+      const res = await rpcBatch([{ method: "eth_getBalance", params: [owner, "latest"] }]);
+      const nativeQty = hexToUnits(res[0], CHAIN.currency.decimals);
+      const nativePrice = 1;
       const rows = [{ symbol: CHAIN.currency.symbol, qty: nativeQty, priceUsd: nativePrice, chg: 0, native: true }];
-      for (const t of list) {
-        if (!(t.qty > 0)) continue;
-        let px = prices[t.address], c = chg[t.address];
-        if (t.wsex && S.feed) { px = S.feed.priceUsd; c = S.feed.change24h; }
-        if (!Number.isFinite(px) && Number.isFinite(t.bsPrice)) px = t.bsPrice;
-        rows.push({ symbol: t.symbol, qty: t.qty, priceUsd: px, chg: c, wsex: !!t.wsex, address: t.address });
-      }
+
       for (const r of rows) r.usd = Number.isFinite(r.priceUsd) ? r.qty * r.priceUsd : NaN;
       const priced = rows.filter((r) => Number.isFinite(r.usd));
       const total = priced.reduce((s, r) => s + r.usd, 0);
@@ -774,7 +752,7 @@
       const p = st.provider || (providers()[0] || {}).provider;
       if (!p) return toast("NO WALLET FOUND");
       try {
-        await p.request({ method: "wallet_addEthereumChain", params: [{ chainId: CHAIN.hexId, chainName: CHAIN.name, nativeCurrency: CHAIN.currency, rpcUrls: [CHAIN.rpc], blockExplorerUrls: [CHAIN.explorer] }] });
+        await p.request({ method: "wallet_addEthereumChain", params: [{ chainId: CHAIN.hexId, chainName: CHAIN.name, nativeCurrency: CHAIN.currency, rpcUrls: [CHAIN.walletRpc || CHAIN.rpc], blockExplorerUrls: [CHAIN.explorer] }] });
         toast(`${CHAIN.name.toUpperCase()} ADDED TO WALLET`);
       } catch (e) { toast(e && e.code === 4001 ? "REJECTED BY USER" : "COULD NOT ADD NETWORK"); }
     };

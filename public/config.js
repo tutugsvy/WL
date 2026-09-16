@@ -11,7 +11,8 @@ window.WSEX_CONFIG = {
     id: 5042,
     hexId: "0x13b2",
     name: "Arc",
-    rpc: "https://argus.world/rpc",
+    rpc: "/api/rpc",
+    walletRpc: "https://argus.world/rpc",
     explorer: "https://explorer.arc.network",
     currency: { name: "USD Coin", symbol: "USDC", decimals: 18 },
     

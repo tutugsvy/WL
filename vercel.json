@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/api/rpc", "destination": "https://argus.world/rpc" },
+    { "source": "/api/argus/:address", "destination": "https://argus.world/api/tokens/:address" }
+  ]
+}
